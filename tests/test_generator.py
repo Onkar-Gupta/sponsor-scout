@@ -160,9 +160,11 @@ def test_dates_use_four_forms():
 
 
 def test_make_adverts_refuses_data_dir_without_official(tmp_path):
+    frozen = ROOT / "data" / "dev.jsonl"
+    before = frozen.read_bytes() if frozen.exists() else None
     with pytest.raises(SystemExit):
-        make_adverts.main(["--split", "dev", "--n", "5", "--out", str(ROOT / "data" / "dev.jsonl")])
-    assert not (ROOT / "data" / "dev.jsonl").exists()
+        make_adverts.main(["--split", "dev", "--n", "5", "--out", str(frozen)])
+    assert (frozen.read_bytes() if frozen.exists() else None) == before  # the refusal left the file alone
     out = tmp_path / "d.jsonl"
     make_adverts.main(["--split", "dev", "--n", "5", "--out", str(out)])
     assert len(out.read_text(encoding="utf-8").splitlines()) == 5
