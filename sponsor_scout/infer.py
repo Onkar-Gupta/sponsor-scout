@@ -44,7 +44,10 @@ def generate_hf(model, tok, messages, max_new_tokens):
     torch.cuda.synchronize()
     ms = (time.perf_counter() - start) * 1000
     new = out[0][inputs["input_ids"].shape[1]:]
-    return tok.decode(new, skip_special_tokens=True).strip(), ms
+    text = tok.decode(new, skip_special_tokens=True).strip()
+    del inputs, out
+    torch.cuda.empty_cache()  # long few-shot prompts fragment the 8 GB card otherwise
+    return text, ms
 
 
 def ollama_schema(path=SCHEMA_PATH):
