@@ -92,6 +92,14 @@ Fixed now, before any data exists. Exactly six.
 ## 8. Amendments
 
 - 5 Nov 2026: protocol written before any data, code or model run existed; no result existed.
+- 5 Nov 2026, scorer definitions (written when the scorer was built, before any data was generated and before any model output existed; no result existed). These fix points the protocol left open:
+  1. **Valid output.** After stripping surrounding whitespace and one optional markdown code fence, the text must be a single JSON object that passes `schema.json`. Prose before or after the object, or a second object, makes it invalid. A repeated skill alone does not make an output invalid (the schema has no uniqueness rule); skills are scored as a set.
+  2. **Invalid outputs.** Score 0 on every scalar field. For skills F1 an invalid output counts as an empty set (its gold skills are false negatives, no false positives). For sponsorship it is a miss for its true class and a false positive for none.
+  3. **Invented-value rate.** Counted over the eight scalar fields that can be null (sponsorship never is), over valid outputs only; the number of invalid outputs is reported beside it. It is 0.0 when there are no null fields.
+  4. **Macro-F1.** F1 is 0 for a class with no true and no predicted cases.
+  5. **Intervals.** Percentile intervals use linear interpolation between order statistics at 2.5 and 97.5. In each bootstrap resample, ratio metrics are recomputed from the resampled sums.
+  6. **Marks.** Mark 1 and 2 "+5.0 points" means a difference of at least 0.05 on a 0 to 1 scale. Mark 3 "at least few-shot's" is a point difference of at least 0 and an interval lower bound above 0. Mark 5 compares the two point estimates only; the interval is reported. The held-out slice is the adverts whose `slice` field is `held_out`.
+  7. **Comparison direction.** Differences are tuned minus few-shot. `scripts/score_run.py` takes `--fewshot` and `--tuned` so the arms cannot be swapped by position.
 
 ## 9. Known biases and limits
 
