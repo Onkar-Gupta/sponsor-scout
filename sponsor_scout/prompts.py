@@ -3,6 +3,7 @@
 The instructions are a compact version of eval/labelling_guide.md. Step 8 adds the few-shot prompt on top of this.
 """
 import json
+from pathlib import Path
 
 INSTRUCTIONS = """You turn one UK job advert into one JSON record. Reply with the JSON object only.
 
@@ -24,3 +25,28 @@ def zero_shot_messages(advert_text):
 def target_text(label):
     """The exact answer the model is trained to produce."""
     return json.dumps(label, ensure_ascii=False)
+
+
+# ------------------------------------------------------------------------------------------ few-shot (step 8)
+FEWSHOT_DIR = Path(__file__).resolve().parent.parent / "prompts"
+
+
+def few_shot_messages(advert_text, examples):
+    """Each example is a prior user turn (same instructions, same layout) and an assistant turn (same answer format)."""
+    messages = []
+    for ex in examples:
+        messages += zero_shot_messages(ex["text"]) + [{"role": "assistant", "content": target_text(ex["label"])}]
+    return messages + zero_shot_messages(advert_text)
+
+
+def pick_fewshot(train_records, version):
+    """The train records named in prompts/fewshot_v{version}.json, in file order."""
+    path = FEWSHOT_DIR / f"fewshot_v{version}.json"
+    if not path.exists():
+        raise FileNotFoundError(f"no few-shot prompt version {version}: {path} does not exist")
+    ids = json.loads(path.read_text(encoding="utf-8"))["example_ids"]
+    by_id = {r["id"]: r for r in train_records}
+    missing = [i for i in ids if i not in by_id]
+    if missing:
+        raise ValueError(f"few-shot v{version} names ids that are not in the train split: {missing}")
+    return [by_id[i] for i in ids]

@@ -22,5 +22,8 @@ version = { attr = "sponsor_scout.__version__" }
 [tool.setuptools]
 packages = ["sponsor_scout"]
 
+[project.scripts]
+sponsor-scout = "sponsor_scout.cli:main"
+
 [tool.ruff]
 line-length = 120

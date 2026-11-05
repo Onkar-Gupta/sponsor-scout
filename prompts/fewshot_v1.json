@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "example_ids": ["train-0104", "train-0258", "train-1369", "train-0469", "train-0134"],
+  "note": "Rule: from train adverts of at most 450 tokens, take the one closest to the median train length (114 tokens, ties by id) for each slot in turn: offers with null salary; excludes with an hourly or daily rate; unclear with a null employer or location; not_stated with a null employer or location; offers with two or more skills. Covers all four sponsorship classes."
+}

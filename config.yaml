@@ -12,3 +12,11 @@ generator:
   max_text_chars: 3500
   class_mix: {offers: 0.30, excludes: 0.25, not_stated: 0.30, unclear: 0.15}
   class_tolerance_points: 5
+
+# Inference and the evaluation arms (step 8). Every arm reads these, so no arm gets a longer or shorter answer.
+inference:
+  max_new_tokens: 300
+  batch_size: 1
+  ollama_url: http://localhost:11434
+  ollama_model: phi4-mini:3.8b
+  hf_cache: "set HF_HOME in the shell (for example D:/ml_cache/huggingface); nothing is set in code"
