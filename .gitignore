@@ -1,0 +1,20 @@
+venv/
+__pycache__/
+*.pyc
+.env
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+*.log
+# models, adapters and caches (never committed)
+models/
+adapters/
+outputs/
+# the author's real job adverts: private, never committed
+data/private/
+# the UK sponsor register is downloaded at run time
+data/register/
+# vault planning notes, not part of the repo
+P4_LLM_Fine_Tuning.md
+P4_Plan.md
+P4_Research_*.md

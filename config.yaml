@@ -1,0 +1,6 @@
+# Every setting lives here. Paths are relative to the repo root.
+schema_file: schema.json
+data_dir: data
+reports_dir: reports
+base_model: microsoft/Phi-4-mini-instruct   # MIT. Fallbacks, in order: Qwen/Qwen3-4B, HuggingFaceTB/SmolLM3-3B
+seed: 0

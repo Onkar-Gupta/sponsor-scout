@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sponsor-scout"
+dynamic = ["version"]
+description = "Fine-tune a small open model to turn UK job adverts into JSON with a visa sponsorship stance, with a pre-registered test of whether tuning beat a good prompt."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Onkar Gupta" }]
+keywords = ["qlora", "fine-tuning", "llm", "information-extraction", "job-adverts"]
+dependencies = ["PyYAML==6.*"]
+
+[project.optional-dependencies]
+dev = ["pytest==9.*", "ruff==0.*"]
+
+[tool.setuptools.dynamic]
+version = { attr = "sponsor_scout.__version__" }
+
+[tool.setuptools]
+packages = ["sponsor_scout"]
+
+[tool.ruff]
+line-length = 120
