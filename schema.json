@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UK job advert record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "title", "employer", "location", "salary_min", "salary_max",
+    "work_pattern", "skills", "years_experience_min", "closing_date", "sponsorship"
+  ],
+  "properties": {
+    "title": { "type": "string" },
+    "employer": { "type": ["string", "null"] },
+    "location": { "type": ["string", "null"], "description": "UK town name, or the value \"remote\"" },
+    "salary_min": { "type": ["number", "null"], "description": "GBP per year" },
+    "salary_max": { "type": ["number", "null"], "description": "GBP per year" },
+    "work_pattern": { "enum": ["on-site", "hybrid", "remote", null] },
+    "skills": { "type": "array", "items": { "type": "string" } },
+    "years_experience_min": { "type": ["integer", "null"] },
+    "closing_date": { "type": ["string", "null"], "format": "date", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "sponsorship": { "enum": ["offers", "excludes", "not_stated", "unclear"] }
+  }
+}
