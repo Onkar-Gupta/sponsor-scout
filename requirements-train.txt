@@ -1,0 +1,11 @@
+# Training and evaluation on a GPU. Install torch first from the CUDA index:
+#   pip install torch==2.11.0 --index-url https://download.pytorch.org/whl/cu128
+# then: pip install -r requirements-train.txt
+# Versions are the ones the smoke test ran with on 5 Nov 2026.
+transformers==5.22.1
+peft==0.21.2
+trl==1.17.1
+bitsandbytes==0.50.2
+datasets==5.1.0
+accelerate==1.15.0
+numpy==2.4.6
