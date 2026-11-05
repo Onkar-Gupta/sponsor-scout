@@ -113,7 +113,7 @@ def test_run_arm_writes_resumes_and_hides_the_gold(tmp_path):
     infer.run_arm("zero_shot", recs, out, cfg_here(), resume=True, generate=gen, log=lambda m: None)
     rows = [json.loads(x) for x in out.read_text(encoding="utf-8").splitlines()]
     assert [r["id"] for r in rows] == [r["id"] for r in recs]
-    assert set(rows[0]) == {"id", "output", "latency_ms", "arm"} and rows[0]["arm"] == "zero_shot"
+    assert set(rows[0]) == {"id", "output", "latency_ms", "arm", "batch_size"} and rows[0]["arm"] == "zero_shot"
     assert len(calls) == 5
     for rec, call in zip(recs, calls):
         assert json.dumps(rec["label"]) not in call and rec["slice"] not in call.replace(rec["text"], "")
@@ -188,3 +188,21 @@ def test_reminder_style_ends_every_user_turn_with_the_reminder():
     msgs = few_shot_messages("THE ADVERT", pick_fewshot(TRAIN, 1), "reminder")
     users = [m["content"] for m in msgs if m["role"] == "user"]
     assert len(users) == 6 and all(u.endswith(REMINDER) and INSTRUCTIONS in u for u in users)
+
+
+def test_batched_run_keeps_order_and_ids(tmp_path, monkeypatch):
+    recs = DEV[:5]
+    calls = []
+
+    def fake_batch(batch):
+        calls.append(len(batch))
+        return [("{}", 1.0)] * len(batch)
+
+    monkeypatch.setattr(infer, "build_batch_generator", lambda *a, **k: fake_batch)
+    cfg = cfg_here()
+    cfg["inference"]["batch_size"] = 2
+    out = tmp_path / "o.jsonl"
+    infer.run_arm("zero_shot", recs, out, cfg, log=lambda m: None)
+    rows = [json.loads(x) for x in out.read_text(encoding="utf-8").splitlines()]
+    assert calls == [2, 2, 1] and [r["id"] for r in rows] == [r["id"] for r in recs]
+    assert all(r["batch_size"] == 2 for r in rows)

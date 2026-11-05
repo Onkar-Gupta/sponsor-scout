@@ -50,6 +50,26 @@ def generate_hf(model, tok, messages, max_new_tokens):
     return text, ms
 
 
+def generate_hf_batch(model, tok, batch, max_new_tokens):
+    """Greedy, several adverts at once with left padding. Returns [(text, ms)]; ms is the batch time divided by its size."""
+    import torch
+
+    prompts = [tok.apply_chat_template(m, tokenize=False, add_generation_prompt=True) for m in batch]
+    tok.padding_side = "left"
+    inputs = tok(prompts, return_tensors="pt", padding=True, add_special_tokens=False).to(model.device)
+    torch.cuda.synchronize()
+    start = time.perf_counter()
+    with torch.no_grad():
+        out = model.generate(**inputs, max_new_tokens=max_new_tokens, do_sample=False, pad_token_id=tok.pad_token_id)
+    torch.cuda.synchronize()
+    ms = (time.perf_counter() - start) * 1000 / len(batch)
+    width = inputs["input_ids"].shape[1]
+    texts = [tok.decode(row[width:], skip_special_tokens=True).strip() for row in out]
+    del inputs, out
+    torch.cuda.empty_cache()
+    return [(t, ms) for t in texts]
+
+
 def ollama_schema(path=SCHEMA_PATH):
     """schema.json without the keywords Ollama's grammar builder does not need ($schema, title, format)."""
     def clean(node):
@@ -103,6 +123,12 @@ def build_generator(arm, cfg, adapter=None):
     return lambda messages: generate_hf(model, tok, messages, cfg["inference"]["max_new_tokens"])
 
 
+def build_batch_generator(arm, cfg, adapter=None):
+    """Returns generate(list of messages) -> [(text, ms)]. Local model arms only."""
+    model, tok = load_hf(cfg["base_model"], adapter if arm == "tuned" else None)
+    return lambda batch: generate_hf_batch(model, tok, batch, cfg["inference"]["max_new_tokens"])
+
+
 def messages_for(arm, text, examples, style="repeat"):
     return few_shot_messages(text, examples, style) if arm == "few_shot" else zero_shot_messages(text)
 
@@ -130,14 +156,25 @@ def run_arm(arm, records, out_path, cfg, adapter=None, fewshot_version=1, resume
             examples = pick_fewshot([json.loads(x) for x in f if x.strip()], fewshot_version)
     done = _done_ids(out_path) if resume else set()
     todo = [r for r in records if r["id"] not in done]
-    gen = generate or build_generator(arm, cfg, adapter)
+    size = max(1, int(cfg["inference"].get("batch_size", 1)))
+    if generate is None and arm != "constrained" and size > 1:
+        gen_batch = build_batch_generator(arm, cfg, adapter)
+    else:
+        size = 1
+        single = generate or build_generator(arm, cfg, adapter)
+
+        def gen_batch(batch):
+            return [single(m) for m in batch]
     start = time.perf_counter()
     with open(out_path, "a" if resume else "w", encoding="utf-8", newline="\n") as f:
-        for i, rec in enumerate(todo, 1):
-            text, ms = gen(messages_for(arm, rec["text"], examples, style))
-            row = {"id": rec["id"], "output": text, "latency_ms": round(ms, 1), "arm": arm}
-            f.write(json.dumps(row, ensure_ascii=False) + "\n")
+        for lo in range(0, len(todo), size):
+            chunk = todo[lo:lo + size]
+            results = gen_batch([messages_for(arm, r["text"], examples, style) for r in chunk])
+            for rec, (text, ms) in zip(chunk, results):
+                row = {"id": rec["id"], "output": text, "latency_ms": round(ms, 1), "arm": arm, "batch_size": size}
+                f.write(json.dumps(row, ensure_ascii=False) + "\n")
             f.flush()
+            i = lo + len(chunk)
             el = time.perf_counter() - start
             sys.stderr.write(f"\r{arm}: {i}/{len(todo)}  elapsed {el:.0f}s  remaining ~{el / i * (len(todo) - i):.0f}s ")
             sys.stderr.flush()

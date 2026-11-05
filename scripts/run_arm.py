@@ -31,6 +31,7 @@ def main(argv=None):
     ap.add_argument("--adapter")
     ap.add_argument("--fewshot-version", type=int, default=1)
     ap.add_argument("--limit", type=int)
+    ap.add_argument("--batch-size", type=int, help="adverts per GPU batch; overrides config.yaml (inference.batch_size)")
     ap.add_argument("--resume", action="store_true")
     ap.add_argument("--official", action="store_true", help="the one scored run on test")
     args = ap.parse_args(argv)
@@ -45,6 +46,8 @@ def main(argv=None):
         if Path(args.out).exists():
             sys.exit(f"refused: {args.out} already exists; an official output is never overwritten")
     cfg = yaml.safe_load((ROOT / "config.yaml").read_text(encoding="utf-8"))
+    if args.batch_size:
+        cfg["inference"]["batch_size"] = args.batch_size
     cfg["data_dir"] = str(ROOT / cfg["data_dir"])
     with open(Path(cfg["data_dir"]) / f"{args.split}.jsonl", encoding="utf-8") as f:
         records = [json.loads(x) for x in f if x.strip()][: args.limit]
