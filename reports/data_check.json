@@ -1,0 +1,52 @@
+{
+  "counts": {
+    "train": {
+      "in_style": 2000,
+      "total": 2000
+    },
+    "dev": {
+      "in_style": 300,
+      "total": 300
+    },
+    "test": {
+      "in_style": 300,
+      "held_out": 300,
+      "total": 600
+    }
+  },
+  "class_mix": {
+    "train": {
+      "offers": 30.0,
+      "excludes": 25.0,
+      "not_stated": 30.0,
+      "unclear": 15.0
+    },
+    "dev": {
+      "offers": 30.0,
+      "excludes": 25.0,
+      "not_stated": 30.0,
+      "unclear": 15.0
+    },
+    "test": {
+      "offers": 30.0,
+      "excludes": 25.0,
+      "not_stated": 30.0,
+      "unclear": 15.0
+    }
+  },
+  "ngram_overlap_with_train": {
+    "in_style": {
+      "records": 300,
+      "grams": 20572,
+      "share_in_train": 0.2917
+    },
+    "held_out": {
+      "records": 300,
+      "grams": 20333,
+      "share_in_train": 0.1165
+    }
+  },
+  "failure_count": 0,
+  "failures_shown": [],
+  "ok": true
+}
