@@ -32,9 +32,7 @@ FEWSHOT_DIR = Path(__file__).resolve().parent.parent / "prompts"
 
 
 REMINDER = (
-    "
-
-Reminder: include all ten keys every time. Use null (never words like competitive or negotiable) for a missing "
+    "\n\nReminder: include all ten keys every time. Use null (never words like competitive or negotiable) for a missing "
     "salary, closing date, years or employer, [] when there are no skills, and one of the four sponsorship words."
 )
 
