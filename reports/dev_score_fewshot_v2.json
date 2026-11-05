@@ -1,0 +1,59 @@
+{
+  "all": {
+    "n": 300,
+    "json_validity": 0.7333333333333333,
+    "per_field_accuracy": {
+      "title": 0.73,
+      "employer": 0.6466666666666666,
+      "location": 0.6466666666666666,
+      "salary_min": 0.5466666666666666,
+      "salary_max": 0.5066666666666667,
+      "work_pattern": 0.6466666666666666,
+      "years_experience_min": 0.7333333333333333,
+      "closing_date": 0.6733333333333333,
+      "sponsorship": 0.6433333333333333
+    },
+    "mean_field_accuracy": 0.6414814814814814,
+    "skills_f1": 0.8648920140632848,
+    "sponsorship_accuracy": 0.6433333333333333,
+    "sponsorship_macro_f1": 0.6921709656084656,
+    "sponsorship_confusion": {
+      "offers": {
+        "offers": 66,
+        "excludes": 0,
+        "not_stated": 0,
+        "unclear": 0,
+        "invalid": 24
+      },
+      "excludes": {
+        "offers": 0,
+        "excludes": 48,
+        "not_stated": 4,
+        "unclear": 3,
+        "invalid": 20
+      },
+      "not_stated": {
+        "offers": 2,
+        "excludes": 0,
+        "not_stated": 66,
+        "unclear": 3,
+        "invalid": 19
+      },
+      "unclear": {
+        "offers": 10,
+        "excludes": 3,
+        "not_stated": 2,
+        "unclear": 13,
+        "invalid": 17
+      }
+    },
+    "invented_value_rate": 0.3333333333333333,
+    "invented_counted_on_valid_only": {
+      "valid_outputs": 220,
+      "invalid_outputs": 80,
+      "null_fields": 324,
+      "invented": 108
+    },
+    "exact_match": 0.24
+  }
+}
