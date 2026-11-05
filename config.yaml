@@ -4,3 +4,11 @@ data_dir: data
 reports_dir: reports
 base_model: microsoft/Phi-4-mini-instruct   # MIT. Fallbacks, in order: Qwen/Qwen3-4B, HuggingFaceTB/SmolLM3-3B
 seed: 0
+
+# Synthetic advert generator and data checker (step 3).
+generator:
+  seeds: {train: 1, dev: 2, test: 3}
+  sizes: {train: 2000, dev: 300, test: 600}
+  max_text_chars: 3500
+  class_mix: {offers: 0.30, excludes: 0.25, not_stated: 0.30, unclear: 0.15}
+  class_tolerance_points: 5
