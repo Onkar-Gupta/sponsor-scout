@@ -31,11 +31,20 @@ def target_text(label):
 FEWSHOT_DIR = Path(__file__).resolve().parent.parent / "prompts"
 
 
+REMINDER = (
+    "
+
+Reminder: include all ten keys every time. Use null (never words like competitive or negotiable) for a missing "
+    "salary, closing date, years or employer, [] when there are no skills, and one of the four sponsorship words."
+)
+
+
 def few_shot_messages(advert_text, examples, style="repeat"):
     """Each example is a prior user turn and an assistant turn (same answer format).
 
     style "repeat" (v1): every user turn carries the full instructions.
-    style "once" (v2+): the instructions appear in the first turn only; later turns hold just the advert.
+    style "reminder" (v3): as "repeat", plus REMINDER at the end of every user turn.
+    style "once" (v2): the instructions appear in the first turn only; later turns hold just the advert.
     """
     messages = []
     if style == "once":
@@ -43,9 +52,11 @@ def few_shot_messages(advert_text, examples, style="repeat"):
             user = zero_shot_messages(ex["text"])[0]["content"] if i == 0 else f"Advert:\n{ex['text']}"
             messages += [{"role": "user", "content": user}, {"role": "assistant", "content": target_text(ex["label"])}]
         return messages + [{"role": "user", "content": f"Advert:\n{advert_text}"}]
+    tail = REMINDER if style == "reminder" else ""
     for ex in examples:
-        messages += zero_shot_messages(ex["text"]) + [{"role": "assistant", "content": target_text(ex["label"])}]
-    return messages + zero_shot_messages(advert_text)
+        user = zero_shot_messages(ex["text"])[0]["content"] + tail
+        messages += [{"role": "user", "content": user}, {"role": "assistant", "content": target_text(ex["label"])}]
+    return messages + [{"role": "user", "content": zero_shot_messages(advert_text)[0]["content"] + tail}]
 
 
 def fewshot_style(version):

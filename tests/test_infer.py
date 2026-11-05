@@ -181,3 +181,10 @@ def test_once_style_writes_the_instructions_a_single_time():
     assert sum(INSTRUCTIONS in m["content"] for m in msgs) == 1
     assert len(msgs) == 11 and msgs[-1]["content"] == "Advert:\nTHE ADVERT"
     assert [m["content"] for m in msgs if m["role"] == "assistant"] == [target_text(e["label"]) for e in ex]
+
+
+def test_reminder_style_ends_every_user_turn_with_the_reminder():
+    from sponsor_scout.prompts import REMINDER
+    msgs = few_shot_messages("THE ADVERT", pick_fewshot(TRAIN, 1), "reminder")
+    users = [m["content"] for m in msgs if m["role"] == "user"]
+    assert len(users) == 6 and all(u.endswith(REMINDER) and INSTRUCTIONS in u for u in users)

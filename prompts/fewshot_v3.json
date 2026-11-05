@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "style": "reminder",
+  "example_ids": ["train-0104", "train-0258", "train-1369", "train-0469", "train-0134"],
+  "note": "Chosen after dev scores: v1 0.757 (38 invalid), v2 0.642 (80 invalid, mostly missing keys). v1 layout (instructions in every turn) plus a one-line reminder at the end of every user turn about all ten keys, null and the four sponsorship words. Same five examples."
+}
