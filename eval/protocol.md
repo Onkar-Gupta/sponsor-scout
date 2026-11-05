@@ -40,7 +40,7 @@ All arms use the same base weights, greedy decoding, the same schema text, the s
 | Held-out slice | Style families and sponsorship phrasings never used in train or dev. Job families and towns are also held out from train. |
 | Class mix | About 30 percent offers, 25 excludes, 30 not_stated, 15 unclear, in every split. |
 | Private set | 30 to 50 real adverts the author is already reading. Text kept in a gitignored folder, never committed. Labelled by the author with the guide before any model sees them. |
-| Counts | TBC (to be filled from the checker output once data exists). |
+| Counts | See the F1 Amendment in section 8 and `reports/data_check.json`. |
 
 Licences: generator code MIT, generated data CC0. MMLU is downloaded at run time and not committed.
 
@@ -100,6 +100,7 @@ Fixed now, before any data exists. Exactly six.
   5. **Intervals.** Percentile intervals use linear interpolation between order statistics at 2.5 and 97.5. In each bootstrap resample, ratio metrics are recomputed from the resampled sums.
   6. **Marks.** Mark 1 and 2 "+5.0 points" means a difference of at least 0.05 on a 0 to 1 scale. Mark 3 "at least few-shot's" is a point difference of at least 0 and an interval lower bound above 0. Mark 5 compares the two point estimates only; the interval is reported. The held-out slice is the adverts whose `slice` field is `held_out`.
   7. **Comparison direction.** Differences are tuned minus few-shot. `scripts/score_run.py` takes `--fewshot` and `--tuned` so the arms cannot be swapped by position.
+- 5 Nov 2026, F1 reached: the official data was generated once (commit d95ca03, `scripts/make_adverts.py --official`, seeds 1, 2 and 3 from `config.yaml`): train 2,000, dev 300, test 600 (300 in-style, 300 held-out). The checker (`reports/data_check.json`) found 0 failures: class mix exactly 30, 25, 30 and 15 percent in every split, and the share of test 8-grams found in train is 0.2917 for the in-style slice and 0.1165 for the held-out slice. SHA-256 hashes of the three splits and `schema.json` are in `data/SHA256SUMS.json` and guarded by `tests/test_freeze_guard.py`. No model output existed. The data is not regenerated without a dated Amendment giving the reason.
 
 ## 9. Known biases and limits
 
