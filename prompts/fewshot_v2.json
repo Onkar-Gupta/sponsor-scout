@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "style": "once",
+  "example_ids": ["train-0104", "train-0258", "train-1369", "train-0469", "train-0134"],
+  "note": "Same five examples as v1. Only the layout changes: the instructions are written once, in the first turn, instead of in every example turn."
+}

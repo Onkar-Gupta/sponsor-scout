@@ -31,12 +31,27 @@ def target_text(label):
 FEWSHOT_DIR = Path(__file__).resolve().parent.parent / "prompts"
 
 
-def few_shot_messages(advert_text, examples):
-    """Each example is a prior user turn (same instructions, same layout) and an assistant turn (same answer format)."""
+def few_shot_messages(advert_text, examples, style="repeat"):
+    """Each example is a prior user turn and an assistant turn (same answer format).
+
+    style "repeat" (v1): every user turn carries the full instructions.
+    style "once" (v2+): the instructions appear in the first turn only; later turns hold just the advert.
+    """
     messages = []
+    if style == "once":
+        for i, ex in enumerate(examples):
+            user = zero_shot_messages(ex["text"])[0]["content"] if i == 0 else f"Advert:\n{ex['text']}"
+            messages += [{"role": "user", "content": user}, {"role": "assistant", "content": target_text(ex["label"])}]
+        return messages + [{"role": "user", "content": f"Advert:\n{advert_text}"}]
     for ex in examples:
         messages += zero_shot_messages(ex["text"]) + [{"role": "assistant", "content": target_text(ex["label"])}]
     return messages + zero_shot_messages(advert_text)
+
+
+def fewshot_style(version):
+    """"repeat" unless prompts/fewshot_v{version}.json says otherwise."""
+    path = FEWSHOT_DIR / f"fewshot_v{version}.json"
+    return json.loads(path.read_text(encoding="utf-8")).get("style", "repeat") if path.exists() else "repeat"
 
 
 def pick_fewshot(train_records, version):

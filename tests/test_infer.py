@@ -173,3 +173,11 @@ def test_unload_ollama_sends_keep_alive_zero(monkeypatch):
     monkeypatch.setattr(infer.urllib.request, "urlopen", fake_urlopen)
     infer.unload_ollama({"inference": {"ollama_url": "http://x:1/", "ollama_model": "m"}})
     assert sent == {"url": "http://x:1/api/generate", "body": {"model": "m", "keep_alive": 0}}
+
+
+def test_once_style_writes_the_instructions_a_single_time():
+    ex = pick_fewshot(TRAIN, 1)
+    msgs = few_shot_messages("THE ADVERT", ex, "once")
+    assert sum(INSTRUCTIONS in m["content"] for m in msgs) == 1
+    assert len(msgs) == 11 and msgs[-1]["content"] == "Advert:\nTHE ADVERT"
+    assert [m["content"] for m in msgs if m["role"] == "assistant"] == [target_text(e["label"]) for e in ex]

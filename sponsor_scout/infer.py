@@ -7,7 +7,7 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
-from .prompts import few_shot_messages, pick_fewshot, zero_shot_messages
+from .prompts import few_shot_messages, fewshot_style, pick_fewshot, zero_shot_messages
 
 ARMS = ("zero_shot", "few_shot", "tuned", "constrained")
 SCHEMA_PATH = Path(__file__).resolve().parent.parent / "schema.json"
@@ -100,8 +100,8 @@ def build_generator(arm, cfg, adapter=None):
     return lambda messages: generate_hf(model, tok, messages, cfg["inference"]["max_new_tokens"])
 
 
-def messages_for(arm, text, examples):
-    return few_shot_messages(text, examples) if arm == "few_shot" else zero_shot_messages(text)
+def messages_for(arm, text, examples, style="repeat"):
+    return few_shot_messages(text, examples, style) if arm == "few_shot" else zero_shot_messages(text)
 
 
 def _done_ids(path):
@@ -120,8 +120,9 @@ def run_arm(arm, records, out_path, cfg, adapter=None, fewshot_version=1, resume
         raise ValueError(f"unknown arm {arm!r}; choose from {ARMS}")
     if arm == "tuned" and not adapter:
         raise ValueError("the tuned arm needs an adapter")
-    examples = []
+    examples, style = [], "repeat"
     if arm == "few_shot":
+        style = fewshot_style(fewshot_version)
         with open(Path(cfg.get("data_dir", "data")) / "train.jsonl", encoding="utf-8") as f:
             examples = pick_fewshot([json.loads(x) for x in f if x.strip()], fewshot_version)
     done = _done_ids(out_path) if resume else set()
@@ -130,7 +131,7 @@ def run_arm(arm, records, out_path, cfg, adapter=None, fewshot_version=1, resume
     start = time.perf_counter()
     with open(out_path, "a" if resume else "w", encoding="utf-8", newline="\n") as f:
         for i, rec in enumerate(todo, 1):
-            text, ms = gen(messages_for(arm, rec["text"], examples))
+            text, ms = gen(messages_for(arm, rec["text"], examples, style))
             row = {"id": rec["id"], "output": text, "latency_ms": round(ms, 1), "arm": arm}
             f.write(json.dumps(row, ensure_ascii=False) + "\n")
             f.flush()
