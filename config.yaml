@@ -20,3 +20,17 @@ inference:
   ollama_url: http://localhost:11434
   ollama_model: phi4-mini:3.8b
   hf_cache: "set HF_HOME in the shell (for example D:/ml_cache/huggingface); nothing is set in code"
+
+# QLoRA training (step 9). The allowed values are the pre-registered grid of eval/protocol.md section 6 (F2).
+training:
+  allowed: {rank: [8, 16], learning_rate: [0.0001, 0.0002], epochs: [1, 2, 3]}
+  max_dev_runs: 5            # the equal tuning budget: at most this many LoRA training runs on dev
+  alpha_factor: 2            # lora_alpha = alpha_factor x rank
+  dropout: 0.05
+  target_modules: [qkv_proj, o_proj, gate_up_proj, down_proj]   # Phi-4-mini fused attention and MLP layers
+  batch_size: 1
+  accumulation: 16
+  max_length: 1024           # the longest training example is 577 tokens
+  scheduler: cosine
+  warmup: 0.05               # a float below 1 is a share of all training steps (transformers 5)
+  adapter_dir: outputs/adapters   # outside git (see .gitignore)
