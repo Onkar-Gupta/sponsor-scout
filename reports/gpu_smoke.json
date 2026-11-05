@@ -1,0 +1,15 @@
+{
+ "model": "microsoft/Phi-4-mini-instruct",
+ "steps": 20,
+ "accumulation": 16,
+ "max_length": 1024,
+ "rank": 16,
+ "seconds": 249.7,
+ "seconds_per_step": 12.49,
+ "peak_gpu_gib": 3.55,
+ "gpu_total_gib": 8.0,
+ "max_tokens_seen": 577,
+ "loss_first": 0.25751596689224243,
+ "loss_last": 0.02028852328658104,
+ "torch": "2.11.0+cu128"
+}
