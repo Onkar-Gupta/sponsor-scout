@@ -106,7 +106,13 @@ Fixed now, before any data exists. Exactly six.
   2. **Batch 8 check on the tuned model.** The first 30 dev adverts were run at batch size 8 (`outputs/check_batch8_tuned.jsonl`). All 30 outputs are identical text to the batch size 1 outputs of the same adapter. Mean latency per row fell from 9,332 ms to 1,355 ms. This covers one adapter and 30 adverts, not every setting.
   3. **Batch 8 on few-shot v3.** A batch size 8 run of v3 (`outputs/dev_fewshot_v3_b8.jsonl`) had a mean latency of 25,464 ms per row over its first 16 rows, against 9,762 ms at batch size 1 over 57 rows. The few-shot prompt is long, and eight padded copies appear to overload the 8 GiB card; the memory spill itself was not confirmed. A rerun of v3 is the same prompt version, not a new one, so it does not use up the budget of 5.
   4. **Rule.** Every few-shot run uses batch size 1. Tuned runs may use batch size 8 for speed, with the size stated in the report. Latency is not compared across batch sizes. When latency is reported per arm (section 9), both arms are timed at batch size 1.
-  5. **Kept files.** `dev_fewshot_v3.jsonl` (57 rows) and `dev_fewshot_v3_b8.jsonl` (16 rows) are partial runs and are not scored.
+  5. **Kept files.** `dev_fewshot_v3.jsonl` (57 rows) and `dev_fewshot_v3_b8.jsonl` (16 rows) are partial runs and are not scored. The scored v3 run is `dev_fewshot_v3_b1.jsonl` (300 rows, batch size 1), report `reports/dev_score_fewshot_v3.json`.
+- 6 Nov 2026, dev tuning stopped early on purpose (written before any test output existed; no pass mark moves):
+  1. **Budget used.** The protocol allows up to 5 few-shot prompt versions and up to 5 LoRA runs. Used: 3 prompt versions (v1, v2, v3, all scored on the 300 dev adverts at batch size 1) and 1 LoRA run (`r16_lr2e-4_e2`). The budget is a ceiling, not a target.
+  2. **Dev results.** Mean field accuracy: few-shot v1 0.757, v2 0.641, v3 0.750; LoRA run 1 0.994. Few-shot v3 had the best JSON validity (0.887) but the lowest sponsorship accuracy (0.553).
+  3. **Why stop.** LoRA run 1 is close to the ceiling on dev (JSON valid 1.000, sponsorship accuracy 1.000), so further runs are unlikely to change the choice. Dev is synthetic, so this says nothing about real adverts; that is covered by the private check and the limits in section 9.
+  4. **Fairness.** The few-shot arm had 3 tries and the tuned arm 1, so the unspent budget does not favour the tuned arm.
+  5. **Selection rule unchanged.** Highest dev mean field accuracy, tie-break smaller rank, then fewer epochs. Which settings are chosen is recorded in the freeze Amendment (step 11), not here.
 
 ## 9. Known biases and limits
 
