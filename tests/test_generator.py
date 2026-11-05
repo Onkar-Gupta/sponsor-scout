@@ -12,7 +12,7 @@ from sponsor_scout.schema import date_forms, text_problems, to_annual, validate
 
 ROOT = Path(__file__).resolve().parent.parent
 CFG = load_config()
-EM_DASH = "2014"
+EM_DASH = "—"
 
 
 def _load_script(relpath, name):
