@@ -74,7 +74,7 @@ nav.stuck{background:rgba(13,13,11,.78);backdrop-filter:blur(14px);-webkit-backd
 .hero .wrap{position:relative;z-index:1}
 .hero{position:relative;overflow:hidden}
 
-/* demo */
+/* demo: step-by-step trace */
 #demo h2{max-width:none}
 .demo-head{display:flex;justify-content:space-between;align-items:end;gap:32px;flex-wrap:wrap;margin-bottom:34px}
 .controls{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
@@ -86,28 +86,55 @@ nav.stuck{background:rgba(13,13,11,.78);backdrop-filter:blur(14px);-webkit-backd
 .seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px}
 .seg button{border:0;background:transparent;padding:8px 16px;border-radius:999px;font:500 13.5px/1 var(--sans);color:var(--muted);cursor:pointer;transition:all .25s}
 .seg button[aria-pressed=true]{background:var(--accent);color:var(--on-accent)}
-.stage{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.04fr);border-radius:22px;overflow:hidden;box-shadow:0 0 0 1px var(--line),0 40px 90px -30px rgba(0,0,0,.8)}
-.pane{padding:clamp(22px,2.6vw,38px);min-height:430px}
-.advert{background:var(--paper);color:var(--ink2)}
-.json{background:var(--deep);color:var(--on-dark)}
-.advert .pane-label{color:rgba(17,17,15,.5)}
-.pane-label{display:flex;justify-content:space-between;font:500 11.5px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;margin-bottom:22px;color:var(--faint)}
-.json .pane-label{color:rgba(242,237,226,.5)}
-.advert pre,.json pre{font:400 14px/1.75 var(--mono);white-space:pre-wrap;word-break:break-word}
-.advert .ln{display:block;padding:0 8px;margin:0 -8px;border-radius:4px}
-.advert .ln.mark{background:rgba(232,71,42,.18);box-shadow:inset 3px 0 0 var(--accent);color:var(--ink)}
-.json .jl{display:block;opacity:0;transform:translateX(-8px);animation:jin .5s var(--ease) forwards;animation-delay:calc(var(--k)*45ms)}
-@keyframes jin{to{opacity:1;transform:none}}
-.json .k{color:rgba(242,237,226,.55)}
-.json .s{color:#EADFC7}
-.json .n{color:#EADFC7}
-.json .z{color:rgba(242,237,226,.38);font-style:italic}
-.json .jl.bad{background:rgba(232,71,42,.2);box-shadow:inset 3px 0 0 var(--accent);margin:0 -8px;padding:0 8px;border-radius:3px}
-.json .jl.key-field .v .s{color:var(--accent);font-weight:500}
-.caption{margin-top:20px;font-size:14.5px;color:var(--muted);min-height:3em;max-width:80ch}
-.caption b{color:var(--text);font-weight:600}
-.verdict{display:inline-block;margin-left:6px;padding:2px 10px;border-radius:999px;font:500 12px/1.6 var(--mono);background:var(--text);color:var(--bg)}
-.verdict.bad{background:var(--accent);color:var(--on-accent)}
+.trace{border-radius:22px;background:var(--deep);box-shadow:0 0 0 1px var(--line),0 40px 90px -30px rgba(0,0,0,.8);overflow:hidden}
+.bar{display:flex;align-items:center;gap:8px;padding:14px clamp(20px,3vw,40px);border-bottom:1px solid var(--line);font:500 12px/1 var(--mono);letter-spacing:.04em;color:var(--faint)}
+.bar i{width:10px;height:10px;border-radius:50%;background:rgba(242,237,226,.16);flex:none}
+.bar span{margin-left:10px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.replay{flex:none;border:1px solid var(--line);background:transparent;color:var(--text);border-radius:999px;padding:8px 14px;font:500 12px/1 var(--mono);cursor:pointer;transition:all .25s}
+.replay:hover{background:var(--text);color:var(--bg)}
+.tstep{display:grid;grid-template-columns:34px minmax(0,1fr);gap:0 16px;padding:26px clamp(20px,3vw,40px);border-bottom:1px solid var(--line)}
+.tstep:last-child{border-bottom:0}
+.js .tstep{opacity:0;transform:translateY(10px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.js .tstep.on{opacity:1;transform:none}
+.tno{font:500 12px/1.6 var(--mono);color:var(--accent)}
+.tstep h3{font:500 12px/1.6 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:14px}
+.tstep pre{font:400 13.5px/1.75 var(--mono);white-space:pre-wrap;word-break:break-word;color:var(--text)}
+.sys{color:var(--faint)}
+.sys.clip{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.linkbtn{background:none;border:0;color:var(--accent);font:500 12.5px/1 var(--mono);cursor:pointer;padding:8px 0 4px}
+.linkbtn:hover{text-decoration:underline}
+.adv{margin-top:14px;padding:16px 18px;border-radius:12px;background:var(--paper);color:var(--ink2)}
+.adv .ln{display:block;padding:0 8px;margin:0 -8px;border-radius:4px}
+.adv .ln.mark{background:rgba(232,71,42,.2);box-shadow:inset 3px 0 0 var(--accent);color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip{padding:7px 12px;border-radius:99px;border:1px solid var(--line);font:500 12.5px/1 var(--mono);color:var(--muted)}
+.chip.time{border-color:var(--accent);color:var(--accent);display:inline-flex;gap:8px;align-items:center}
+.spin{width:10px;height:10px;border-radius:50%;border:2px solid var(--accent);border-top-color:transparent;animation:sp .7s linear infinite}
+.chip.done .spin{animation:none;border-color:var(--accent);background:var(--accent)}
+@keyframes sp{to{transform:rotate(360deg)}}
+.caret::after{content:"";display:inline-block;width:8px;height:1.05em;background:var(--accent);margin-left:2px;vertical-align:text-bottom;animation:bl 1s steps(1) infinite}
+@keyframes bl{50%{opacity:0}}
+.checks{list-style:none;display:grid;gap:8px}
+.checks li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;font:400 14.5px/1.55 var(--sans);color:var(--muted)}
+.checks li b{color:var(--text);font-weight:500}
+.checks li>span:first-child{width:18px;height:18px;border-radius:50%;margin-top:3px;background:var(--text) center/11px no-repeat}
+.checks .ok>span:first-child{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%230D0D0B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 6.2l2.4 2.4 4.6-5'/%3E%3C/svg%3E")}
+.checks .no>span:first-child{background-color:var(--accent);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%230D0D0B' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M3 3l6 6M9 3l-6 6'/%3E%3C/svg%3E")}
+.checks .no{color:var(--text)}
+.checks code{font:400 12.5px/1.5 var(--mono);color:var(--accent)}
+.answer{display:grid;grid-template-columns:minmax(0,auto) minmax(0,1fr);gap:clamp(18px,4vw,56px);align-items:end}
+.stance-big{font:400 clamp(54px,8vw,104px)/.9 var(--serif);letter-spacing:-.03em;color:var(--accent)}
+.stance-big.rej{color:var(--muted);font-size:clamp(34px,4.6vw,56px)}
+.answer p{font-size:15.5px;color:var(--muted);max-width:60ch}
+.answer p b{color:var(--text);font-weight:500}
+.own{margin-top:30px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(20px,4vw,60px);align-items:start;padding:28px clamp(20px,3vw,40px);border-radius:18px;border:1px solid var(--line)}
+.own h3{font-size:34px;margin-bottom:10px}
+.own p{color:var(--muted);font-size:15.5px;max-width:48ch}
+.own .code{position:relative;margin:0}
+.copy{position:absolute;top:14px;right:14px;border:1px solid var(--line);background:transparent;color:var(--text);border-radius:99px;padding:6px 12px;font:500 11.5px/1 var(--mono);cursor:pointer}
+.copy:hover{background:var(--text);color:var(--bg)}
+.foot-note{margin-top:20px;font:400 13px/1.5 var(--mono);color:var(--muted)}
+@media(max-width:700px){.answer,.own{grid-template-columns:minmax(0,1fr)}.tstep{grid-template-columns:24px minmax(0,1fr);gap:0 10px}}
 
 /* stats */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--text);margin-top:56px}
@@ -169,7 +196,8 @@ nav.stuck{background:rgba(13,13,11,.78);backdrop-filter:blur(14px);-webkit-backd
 .limit span{font:500 12px/1.9 var(--mono);color:var(--accent)}
 .limit p{font-size:17px}
 .run{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(28px,5vw,90px);align-items:start}
-.code{background:var(--deep);border:1px solid var(--line);color:var(--on-dark);border-radius:18px;padding:26px 28px;font:400 14px/1.8 var(--mono);overflow-x:auto}
+.run>*,.own>*,.honest>*{min-width:0}
+.code{white-space:pre;max-width:100%;background:var(--deep);border:1px solid var(--line);color:var(--on-dark);border-radius:18px;padding:26px 28px;font:400 14px/1.8 var(--mono);overflow-x:auto}
 .code .c{color:rgba(242,237,226,.45)}
 .code .p{color:var(--accent)}
 .code + .code{margin-top:14px}
@@ -184,7 +212,7 @@ footer a:hover{color:var(--accent)}
 
 @media(max-width:980px){
   .links{display:none}
-  .hero-sub,.honest,.run{grid-template-columns:1fr}
+  .hero-sub,.honest,.run{grid-template-columns:minmax(0,1fr)}
   .stage{grid-template-columns:1fr}
   .pane{min-height:0}
   .stats,.steps{grid-template-columns:1fr 1fr}
@@ -255,7 +283,7 @@ footer a:hover{color:var(--accent)}
     <div class="demo-head">
       <div>
         <p class="eyebrow reveal">Try it</p>
-        <h2 class="reveal" style="--i:1;margin-top:18px">Four adverts, <em>four</em> answers.</h2>
+        <h2 class="reveal" style="--i:1;margin-top:18px">Watch one advert <em>go through</em>.</h2>
       </div>
       <div class="controls reveal" style="--i:2">
         <div class="tabs" role="tablist" aria-label="Choose an advert" id="tabs"></div>
@@ -265,12 +293,20 @@ footer a:hover{color:var(--accent)}
         </div>
       </div>
     </div>
-    <div class="stage reveal" style="--i:1" aria-live="polite">
-      <div class="pane advert"><div class="pane-label"><span>Advert</span><span id="adv-id">synthetic · CC0</span></div><pre id="adv"></pre></div>
-      <div class="pane json"><div class="pane-label"><span id="out-label">Tuned model output</span><span id="out-state"></span></div><pre id="out"></pre></div>
+    <div class="trace reveal" style="--i:1">
+      <div class="bar"><i></i><i></i><i></i><span id="bar-cmd"></span><button class="replay" id="replay" type="button">&#8635; Replay</button></div>
+      <div id="tsteps" aria-live="polite"></div>
     </div>
-    <p class="caption" id="cap"></p>
-    <p class="foot-note">These are real test adverts and the real saved outputs from the official run. Orange rows mark where the output differs from the correct label.</p>
+    <p class="foot-note">A replay of the real official run: the exact prompt, the exact text the model wrote, and the same checks that scored it. The adverts are synthetic test adverts (CC0).</p>
+    <div class="own reveal">
+      <div>
+        <h3>Want to try your own advert?</h3>
+        <p>Not on this page. The model needs a GPU, and a public demo would need a paid server. Run it on your own machine instead: paste any advert into a text file and use the command on the right.</p>
+      </div>
+      <div class="code"><button class="copy" id="copy" type="button">Copy</button><span class="code-title">Your own advert</span><span class="c"># after cloning and training, see Run it below</span>
+<span class="p">$</span> sponsor-scout extract --file advert.txt \
+    --arm tuned --adapter outputs/adapters/r16_lr2e-4_e2</div>
+    </div>
   </div>
 </section>
 
@@ -434,76 +470,107 @@ footer a:hover{color:var(--accent)}
   setTimeout(function(){ document.querySelectorAll('.reveal:not(.in)').forEach(function(el){
     var r = el.getBoundingClientRect(); if (r.top < window.innerHeight) el.classList.add('in'); }); }, 2500);
 
-  /* ---------- demo: real test adverts and real saved outputs ---------- */
+  /* ---------- demo: a replay of the real run ---------- */
+  var T = {"instructions": "You turn one UK job advert into one JSON record. Reply with the JSON object only.\n\nFields: title, employer, location, salary_min, salary_max, work_pattern, skills, years_experience_min, closing_date, sponsorship.\nUse null when the advert does not state a value. Label only what the advert says.\n- title: the job title only. employer: the hiring organisation (null if hidden). location: a UK town, or \"remote\" if fully remote.\n- salary_min, salary_max: pounds per year as numbers. \"up to 45k\" gives min null, max 45000. A single figure gives both. \"competitive\" gives both null. Hourly = rate x 37.5 x 52. Daily = rate x 230.\n- work_pattern: \"on-site\", \"hybrid\", \"remote\" or null.\n- skills: tools and skills asked of the candidate, lower case. No benefits, no soft-skill filler.\n- years_experience_min: the lowest years required, as an integer, or null.\n- closing_date: the application deadline only, as yyyy-mm-dd, or null.\n- sponsorship: \"offers\", \"excludes\", \"not_stated\" or \"unclear\". Explicit refusal, or only a right-to-work requirement, is \"excludes\". Explicit offer is \"offers\". Hedged or contradictory wording is \"unclear\". No mention is \"not_stated\".", "items": [{"id": "test-0347", "tab": "Right to work only", "mark": [6], "text": ["Morawick Hospitals Trust is recruiting.", "Post title: Supply Chain Analyst", "Pattern: on-site", "Salary: up to £37,000", "25 days annual leave plus bank holidays", "An extra day off for your birthday", "Candidates must have the right to work in the UK."], "gold": {"title": "Supply Chain Analyst", "employer": "Morawick Hospitals Trust", "location": null, "salary_min": null, "salary_max": 37000, "work_pattern": "on-site", "skills": [], "years_experience_min": null, "closing_date": null, "sponsorship": "excludes"}, "rawT": "{\"title\": \"Supply Chain Analyst\", \"employer\": \"Morawick Hospitals Trust\", \"location\": null, \"salary_min\": null, \"salary_max\": 37000, \"work_pattern\": \"on-site\", \"skills\": [], \"years_experience_min\": null, \"closing_date\": null, \"sponsorship\": \"excludes\"}", "rawP": "{\"title\": \"Supply Chain Analyst\", \"employer\": \"Morawick Hospitals Trust\", \"location\": \"on-site\", \"salary_min\": null, \"salary_max\": 37000, \"work_pattern\": \"on-site\", \"skills\": null, \"years_experience_min\": null, \"closing_date\": null, \"sponsorship\": \"excludes\"}", "msP": 6.8}, {"id": "test-0331", "tab": "Two statements", "mark": [8, 10], "text": ["ROLE: Forklift Operator", "CO: Zilorton Systems", "LOC: Inverness", "PAY: £24k - £32k", "NEED:", "- shipment tracking", "- demand planning", "PERKS: An extra day off for your birthday / Cycle to work scheme", "NOTE: We are unable to sponsor candidates for this role.", "CLOSES: 11 January 2027", "NOTE: We are happy to sponsor the right overseas applicant."], "gold": {"title": "Forklift Operator", "employer": "Zilorton Systems", "location": "Inverness", "salary_min": 24000, "salary_max": 32000, "work_pattern": null, "skills": ["shipment tracking", "demand planning"], "years_experience_min": null, "closing_date": "2027-01-11", "sponsorship": "unclear"}, "rawT": "{\"title\": \"Forklift Operator\", \"employer\": \"Zilorton Systems\", \"location\": \"Inverness\", \"salary_min\": 24000, \"salary_max\": 32000, \"work_pattern\": null, \"skills\": [\"shipment tracking\", \"demand planning\"], \"years_experience_min\": null, \"closing_date\": \"2027-01-11\", \"sponsorship\": \"unclear\"}", "rawP": "{\"title\": \"Forklift Operator\", \"employer\": \"Zilorton Systems\", \"location\": \"Inverness\", \"salary_min\": 24000, \"salary_max\": 32000, \"work_pattern\": \"on-site\", \"skills\": null, \"years_experience_min\": null, \"closing_date\": \"2027-01-11\", \"sponsorship\": \"excludes\"}", "msP": 7.3}, {"id": "test-0424", "tab": "Says yes", "mark": [11], "text": ["ROLE: Quality Control Analyst", "CO: Halarford Ltd", "LOC: Aberdeen", "MODE: office based", "PAY: £45,500 to £53,500", "NEED:", "- Aseptic Technique", "- Western Blotting", "- Good Laboratory Practice", "EXP: minimum 6 years", "PERKS: 25 days annual leave plus bank holidays / Employee assistance programme", "NOTE: Applicants who need a visa are welcome: we will sponsor the right candidate.", "CLOSES: 23 Feb 2027", "REF: THK-9332"], "gold": {"title": "Quality Control Analyst", "employer": "Halarford Ltd", "location": "Aberdeen", "salary_min": 45500, "salary_max": 53500, "work_pattern": "on-site", "skills": ["aseptic technique", "western blotting", "good laboratory practice"], "years_experience_min": 6, "closing_date": "2027-02-23", "sponsorship": "offers"}, "rawT": "{\"title\": \"Quality Control Analyst\", \"employer\": \"Halarford Ltd\", \"location\": \"Aberdeen\", \"salary_min\": 45500, \"salary_max\": 53500, \"work_pattern\": \"on-site\", \"skills\": [\"aseptic technique\", \"western blotting\", \"good laboratory practice\"], \"years_experience_min\": 6, \"closing_date\": \"2027-02-23\", \"sponsorship\": \"offers\"}", "rawP": "{\"title\": \"Quality Control Analyst\", \"employer\": \"Halarford Ltd\", \"location\": \"Aberdeen\", \"work_pattern\": \"on-site\", \"salary_min\": 45500, \"salary_max\": 53500, \"skills\": [\"aseptic technique\", \"western blotting\", \"good laboratory practice\"], \"years_experience_min\": 6, \"closing_date\": \"2027-02-23\", \"sponsorship\": \"offers\"}", "msP": 7.9}, {"id": "test-0590", "tab": "Says nothing", "mark": [], "text": ["Head Chef", "Zilazen Trust", "Based in Carlisle", "Working pattern: on-site", "Salary: £29,000 to £37,000", "We are looking for 4 to 6 years and skills in guest relations, wine knowledge and menu costing.", "Closing date: 28 Dec 2026"], "gold": {"title": "Head Chef", "employer": "Zilazen Trust", "location": "Carlisle", "salary_min": 29000, "salary_max": 37000, "work_pattern": "on-site", "skills": ["guest relations", "wine knowledge", "menu costing"], "years_experience_min": 4, "closing_date": "2026-12-28", "sponsorship": "not_stated"}, "rawT": "{\"title\": \"Head Chef\", \"employer\": \"Zilazen Trust\", \"location\": \"Carlisle\", \"salary_min\": 29000, \"salary_max\": 37000, \"work_pattern\": \"on-site\", \"skills\": [\"guest relations\", \"wine knowledge\", \"menu costing\"], \"years_experience_min\": 4, \"closing_date\": \"2026-12-28\", \"sponsorship\": \"not_stated\"}", "rawP": "{\"title\": \"Head Chef\", \"employer\": \"Zilazen Trust\", \"location\": \"Carlisle\", \"salary_min\": 29000, \"salary_max\": 37000, \"work_pattern\": \"on-site\", \"skills\": [\"guest relations\", \"wine knowledge\", \"menu costing\"], \"years_experience_min\": 4, \"closing_date\": \"2026-12-28\", \"sponsorship\": \"not_stated\"}", "msP": 7.7}]};
+  var ENUM = {work_pattern:['on-site','hybrid','remote',null], sponsorship:['offers','excludes','not_stated','unclear']};
   var KEYS = ['title','employer','location','salary_min','salary_max','work_pattern','skills','years_experience_min','closing_date','sponsorship'];
-  var DATA = [
-    {tab:'Right to work only', id:'test-0347', label:'excludes', mark:[6],
-     text:['Morawick Hospitals Trust is recruiting.','Post title: Supply Chain Analyst','Pattern: on-site','Salary: up to £37,000','25 days annual leave plus bank holidays','An extra day off for your birthday','Candidates must have the right to work in the UK.'],
-     gold:{title:'Supply Chain Analyst',employer:'Morawick Hospitals Trust',location:null,salary_min:null,salary_max:37000,work_pattern:'on-site',skills:[],years_experience_min:null,closing_date:null,sponsorship:'excludes'},
-     prompt:{title:'Supply Chain Analyst',employer:'Morawick Hospitals Trust',location:'on-site',salary_min:null,salary_max:37000,work_pattern:'on-site',skills:null,years_experience_min:null,closing_date:null,sponsorship:'excludes'},
-     cap:'<b>excludes.</b> The only line about the right to work says candidates must already have it, and nothing offers sponsorship. The prompt-only model gets the stance right but puts "on-site" in the location field and writes <span class="mono">null</span> where the schema wants an empty list.'},
-    {tab:'Two statements', id:'test-0331', label:'unclear', mark:[8,10],
-     text:['ROLE: Forklift Operator','CO: Zilorton Systems','LOC: Inverness','PAY: £24k - £32k','NEED:','- shipment tracking','- demand planning','PERKS: An extra day off for your birthday / Cycle to work scheme','NOTE: We are unable to sponsor candidates for this role.','CLOSES: 11 January 2027','NOTE: We are happy to sponsor the right overseas applicant.'],
-     gold:{title:'Forklift Operator',employer:'Zilorton Systems',location:'Inverness',salary_min:24000,salary_max:32000,work_pattern:null,skills:['shipment tracking','demand planning'],years_experience_min:null,closing_date:'2027-01-11',sponsorship:'unclear'},
-     prompt:{title:'Forklift Operator',employer:'Zilorton Systems',location:'Inverness',salary_min:24000,salary_max:32000,work_pattern:'on-site',skills:null,years_experience_min:null,closing_date:'2027-01-11',sponsorship:'excludes'},
-     cap:'<b>unclear.</b> The advert says both "unable to sponsor" and "happy to sponsor". Two contradicting statements give <span class="mono">unclear</span>. The prompt-only model reads the first one, answers <span class="mono">excludes</span>, invents a work pattern and drops the skills.'},
-    {tab:'Says yes', id:'test-0424', label:'offers', mark:[11],
-     text:['ROLE: Quality Control Analyst','CO: Halarford Ltd','LOC: Aberdeen','MODE: office based','PAY: £45,500 to £53,500','NEED:','- Aseptic Technique','- Western Blotting','- Good Laboratory Practice','EXP: minimum 6 years','PERKS: 25 days annual leave plus bank holidays / Employee assistance programme','NOTE: Applicants who need a visa are welcome: we will sponsor the right candidate.','CLOSES: 23 Feb 2027','REF: THK-9332'],
-     gold:{title:'Quality Control Analyst',employer:'Halarford Ltd',location:'Aberdeen',salary_min:45500,salary_max:53500,work_pattern:'on-site',skills:['aseptic technique','western blotting','good laboratory practice'],years_experience_min:6,closing_date:'2027-02-23',sponsorship:'offers'},
-     prompt:null,
-     cap:'<b>offers.</b> An explicit offer to sponsor. "Office based" becomes <span class="mono">on-site</span>, the reference code is ignored and the pay becomes plain numbers. The prompt-only model also gets this one fully right.'},
-    {tab:'Says nothing', id:'test-0590', label:'not_stated', mark:[],
-     text:['Head Chef','Zilazen Trust','Based in Carlisle','Working pattern: on-site','Salary: £29,000 to £37,000','We are looking for 4 to 6 years and skills in guest relations, wine knowledge and menu costing.','Closing date: 28 Dec 2026'],
-     gold:{title:'Head Chef',employer:'Zilazen Trust',location:'Carlisle',salary_min:29000,salary_max:37000,work_pattern:'on-site',skills:['guest relations','wine knowledge','menu costing'],years_experience_min:4,closing_date:'2026-12-28',sponsorship:'not_stated'},
-     prompt:null,
-     cap:'<b>not_stated.</b> There is no line about sponsorship or the right to work, so the stance is <span class="mono">not_stated</span>, never a guess. "4 to 6 years" gives a minimum of 4. The prompt-only model also gets this one fully right.'}
-  ];
-  DATA.forEach(function(d){ if (!d.prompt) d.prompt = d.gold; });
-
-  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-  function val(v){
-    if (v === null) return '<span class="z">null</span>';
-    if (typeof v === 'number') return '<span class="n">'+v+'</span>';
-    if (Array.isArray(v)) return '<span class="s">'+esc(JSON.stringify(v))+'</span>';
-    return '<span class="s">'+esc(JSON.stringify(v))+'</span>';
+  function isStr(v){return typeof v==='string'}
+  function isNum(v){return typeof v==='number'}
+  function checkSchema(o){
+    var errs=[];
+    if (o===null || typeof o!=='object' || Array.isArray(o)) return ['not a JSON object'];
+    KEYS.forEach(function(k){ if(!(k in o)) errs.push('missing key: '+k); });
+    Object.keys(o).forEach(function(k){ if(KEYS.indexOf(k)<0) errs.push('extra key: '+k); });
+    if (!isStr(o.title)) errs.push('title must be text');
+    ['employer','location'].forEach(function(k){ if(k in o && o[k]!==null && !isStr(o[k])) errs.push(k+' must be text or null'); });
+    ['salary_min','salary_max'].forEach(function(k){ if(k in o && o[k]!==null && !isNum(o[k])) errs.push(k+' must be a number or null'); });
+    if ('work_pattern' in o && ENUM.work_pattern.indexOf(o.work_pattern)<0) errs.push('work_pattern is not allowed');
+    if ('skills' in o && !Array.isArray(o.skills)) errs.push('skills is '+(o.skills===null?'null':typeof o.skills)+', the schema wants a list');
+    if ('years_experience_min' in o && o.years_experience_min!==null && !(isNum(o.years_experience_min)&&o.years_experience_min%1===0)) errs.push('years_experience_min must be a whole number or null');
+    if ('closing_date' in o && o.closing_date!==null && !(isStr(o.closing_date)&&/^\d{4}-\d{2}-\d{2}$/.test(o.closing_date))) errs.push('closing_date must be yyyy-mm-dd or null');
+    if ('sponsorship' in o && ENUM.sponsorship.indexOf(o.sponsorship)<0) errs.push('sponsorship is not one of the four words');
+    return errs;
   }
-  var cur = 0, model = 'tuned';
-  var tabs = document.getElementById('tabs'), adv = document.getElementById('adv'), out = document.getElementById('out');
-  var cap = document.getElementById('cap'), advId = document.getElementById('adv-id');
-  var outLabel = document.getElementById('out-label'), outState = document.getElementById('out-state');
-  DATA.forEach(function(d,i){
-    var b = document.createElement('button'); b.type='button'; b.className='tab'; b.role='tab'; b.textContent=d.tab;
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function sleep(ms){ return new Promise(function(r){ setTimeout(r, reduce?0:ms); }); }
+
+  var cur = 0, model = 'tuned', token = 0, fullPrompt = false;
+  var tabs = document.getElementById('tabs'), box = document.getElementById('tsteps'), barCmd = document.getElementById('bar-cmd');
+  T.items.forEach(function(d,i){
+    var b = document.createElement('button'); b.type='button'; b.className='tab'; b.setAttribute('role','tab'); b.textContent=d.tab;
     b.setAttribute('aria-selected', i===0 ? 'true':'false');
-    b.addEventListener('click', function(){ cur = i; render(); });
+    b.addEventListener('click', function(){ cur=i; play(); });
     tabs.appendChild(b);
   });
-  function same(a,b){ return JSON.stringify(a) === JSON.stringify(b); }
-  function render(){
-    var d = DATA[cur], o = model === 'tuned' ? d.gold : d.prompt;   /* the tuned output equals the label on all four */
-    Array.prototype.forEach.call(tabs.children, function(b,i){ b.setAttribute('aria-selected', i===cur ? 'true':'false'); });
-    advId.textContent = d.id + ' · synthetic · CC0';
-    adv.innerHTML = d.text.map(function(l,i){ return '<span class="ln'+(d.mark.indexOf(i)>-1?' mark':'')+'">'+esc(l)+'</span>'; }).join('');
-    var wrong = 0, html = '<span class="jl" style="--k:0">{</span>';
-    KEYS.forEach(function(k,i){
-      var bad = !same(o[k], d.gold[k]); if (bad) wrong++;
-      var key = k === 'sponsorship' ? ' key-field' : '';
-      html += '<span class="jl'+(bad?' bad':'')+key+'" style="--k:'+(i+1)+'">  <span class="k">"'+k+'"</span>: <span class="v">'+val(o[k])+'</span>'+(i<KEYS.length-1?',':'')+'</span>';
-    });
-    html += '<span class="jl" style="--k:11">}</span>';
-    out.innerHTML = html;
-    outLabel.textContent = model === 'tuned' ? 'Tuned model output' : 'Prompt-only model output';
-    outState.innerHTML = wrong ? '<span class="verdict bad">'+wrong+' field'+(wrong>1?'s':'')+' wrong</span>' : '<span class="verdict">all 10 right</span>';
-    cap.innerHTML = d.cap;
+  function advertHtml(d){ return d.text.map(function(l,i){ return '<span class="ln'+(d.mark.indexOf(i)>-1?' mark':'')+'">'+esc(l)+'</span>'; }).join(''); }
+  function step(n, title, inner){ return '<div class="tstep" data-n="'+n+'"><div class="tno">0'+n+'</div><div><h3>'+title+'</h3>'+inner+'</div></div>'; }
+
+  async function play(){
+    var my = ++token, d = T.items[cur], tuned = model==='tuned';
+    Array.prototype.forEach.call(tabs.children, function(b,i){ b.setAttribute('aria-selected', i===cur?'true':'false'); });
+    barCmd.textContent = 'sponsor-scout extract --file advert.txt --arm ' + (tuned ? 'tuned' : 'few_shot');
+    var raw = tuned ? d.rawT : d.rawP, ms = tuned ? '1.2' : d.msP.toFixed(1);
+    var o = null, parseErr = null;
+    try { o = JSON.parse(raw); } catch(e){ parseErr = 'not valid JSON'; }
+    var errs = parseErr ? [parseErr] : checkSchema(o);
+    var valid = errs.length === 0;
+    var wrong = [];
+    if (valid) KEYS.forEach(function(k){ if (JSON.stringify(o[k]) !== JSON.stringify(d.gold[k])) wrong.push(k); });
+    var promptHead = tuned ? 'The instructions below, then the advert.' : 'The same instructions, then five worked example adverts with their correct JSON, then the advert.';
+    box.innerHTML =
+      step(1,'What we send the model',
+        '<p class="sys" style="font-size:14px;margin-bottom:10px">'+promptHead+'</p><pre class="sys'+(fullPrompt?'':' clip')+'" id="sysp">'+esc(T.instructions)+'</pre>'+
+        '<button class="linkbtn" id="tog" type="button">'+(fullPrompt?'Hide the full prompt':'Show the full prompt')+'</button>'+
+        '<div class="adv"><pre style="color:inherit"><span class="ln" style="opacity:.55">Advert:</span>'+advertHtml(d)+'</pre></div>')+
+      step(2,'The model reads it',
+        '<div class="chips"><span class="chip">Phi-4-mini, 3.8B parameters</span><span class="chip">'+(tuned?'LoRA adapter, rank 16':'no adapter')+'</span><span class="chip">4-bit</span><span class="chip">greedy, no randomness</span><span class="chip time" id="tm"><span class="spin"></span><span id="tmt">thinking</span></span></div>')+
+      step(3,'What it wrote','<pre id="rawout" class="caret"></pre>')+
+      step(4,'The checks','<ul class="checks" id="chk"></ul>')+
+      step(5,'The answer','<div class="answer" id="ans"></div>');
+    var steps = box.querySelectorAll('.tstep');
+    document.getElementById('tog').addEventListener('click', function(){ fullPrompt=!fullPrompt; document.getElementById('sysp').classList.toggle('clip', !fullPrompt); this.textContent = fullPrompt?'Hide the full prompt':'Show the full prompt'; });
+    function on(i){ steps[i].classList.add('on'); }
+    on(0); await sleep(900); if (my!==token) return;
+    on(1); await sleep(1500); if (my!==token) return;
+    document.getElementById('tm').classList.add('done'); document.getElementById('tmt').textContent = (tuned?'about ':'')+ms+' s'+(tuned?' (batch of 8, averaged)':'');
+    await sleep(350); if (my!==token) return;
+    on(2);
+    var out = document.getElementById('rawout'), n = 0;
+    while (n < raw.length){ n = Math.min(raw.length, n + (reduce?raw.length:7)); out.textContent = raw.slice(0,n); await sleep(16); if (my!==token) return; }
+    out.classList.remove('caret'); await sleep(350); if (my!==token) return;
+    on(3);
+    var list = document.getElementById('chk'), rows = [];
+    rows.push(parseErr ? ['no','It is <b>not valid JSON</b>.'] : ['ok','It is <b>one JSON object</b>.']);
+    if (!parseErr) rows.push(valid ? ['ok','It matches the schema: <b>all 10 fields, right types</b>.'] : ['no','<b>It breaks the schema:</b> <code>'+esc(errs[0])+'</code>.']);
+    if (valid) rows.push(wrong.length ? ['no','Against the correct label, <b>'+wrong.length+' field'+(wrong.length>1?'s are':' is')+' wrong</b>: <code>'+wrong.join('</code>, <code>')+'</code>.'] : ['ok','Against the correct label, <b>all 10 fields are right</b>.']);
+    else rows.push(['no','An invalid output is <b>scored 0 on every field</b>, as in the official run.']);
+    for (var r=0;r<rows.length;r++){ list.insertAdjacentHTML('beforeend','<li class="'+rows[r][0]+'"><span></span><span>'+rows[r][1]+'</span></li>'); await sleep(420); if (my!==token) return; }
+    await sleep(250); if (my!==token) return;
+    on(4);
+    var ans = document.getElementById('ans'), line = d.mark.length ? esc(d.text[d.mark[0]]) : null;
+    if (!valid){
+      ans.innerHTML = '<div class="stance-big rej">Rejected</div><p>The checks refuse this output, so there is <b>no usable answer</b>. This is the kind of failure the tuning removed: <b>the tuned model passed all four adverts here, the prompt-only model failed two</b>.</p>';
+    } else {
+      ans.innerHTML = '<div class="stance-big">'+esc(o.sponsorship)+'</div><p>'+
+        (d.mark.length ? 'Because of the highlighted line: <b>&ldquo;'+line.replace(/^NOTE:\s*/,'')+'&rdquo;</b>'+(d.mark.length>1?' and a second line that contradicts it.':'') : 'There is no line about sponsorship or the right to work, so the answer is <b>not_stated</b>, never a guess.')+
+        (wrong.length ? ' <b>But this answer is wrong</b>: the correct label is <b>'+esc(d.gold.sponsorship)+'</b>.' : '')+'</p>';
+    }
   }
   function setModel(m){
     model = m;
     document.getElementById('m-tuned').setAttribute('aria-pressed', m==='tuned');
     document.getElementById('m-prompt').setAttribute('aria-pressed', m==='prompt');
-    render();
+    play();
   }
   document.getElementById('m-tuned').addEventListener('click', function(){ setModel('tuned'); });
   document.getElementById('m-prompt').addEventListener('click', function(){ setModel('prompt'); });
-  render();
+  document.getElementById('replay').addEventListener('click', play);
+  document.getElementById('copy').addEventListener('click', function(){
+    var b = this, t = 'sponsor-scout extract --file advert.txt --arm tuned --adapter outputs/adapters/r16_lr2e-4_e2';
+    try { navigator.clipboard.writeText(t).then(function(){ b.textContent='Copied'; setTimeout(function(){ b.textContent='Copy'; },1400); }); } catch(e){ b.textContent='Select and copy'; }
+  });
+  var started = false, so = new IntersectionObserver(function(es){ if (es[0].isIntersecting && !started){ started = true; play(); so.disconnect(); } }, {threshold:.25});
+  so.observe(document.getElementById('tsteps'));
 })();
 </script>
 </body>
