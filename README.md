@@ -5,6 +5,8 @@ Paste a UK job advert, get clean JSON and a straight answer on visa sponsorship,
 [![tests](https://github.com/Onkar-Gupta/sponsor-scout/actions/workflows/tests.yml/badge.svg)](https://github.com/Onkar-Gupta/sponsor-scout/actions/workflows/tests.yml)
 [![licence: MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
 
+**[Live page: watch one advert go through the model, step by step](https://onkar-gupta.github.io/sponsor-scout/)** (a replay of the real official run, not a live model).
+
 ## Quick Start
 
 ```bash
@@ -17,7 +19,7 @@ To train and run the model you need an NVIDIA GPU with 8 GB. See [Train and extr
 
 ## Demo
 
-Real output from the tuned model on a synthetic test advert (left: the advert; right: the model's answer). Demo GIF: TBC.
+Real output from the tuned model on a synthetic test advert (left: the advert; right: the model's answer). The [live page](https://onkar-gupta.github.io/sponsor-scout/) replays this step by step. Demo GIF: TBC.
 
 ```text
 Machine Learning Engineer                     {"title": "Machine Learning Engineer",
