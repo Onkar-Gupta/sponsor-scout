@@ -5,304 +5,314 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>sponsor-scout</title>
 <meta name="description" content="Paste a UK job advert, get clean JSON and a straight answer on visa sponsorship. A small open model tuned on one laptop GPU, tested against pass marks written down first.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2311110F'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23E0381C'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%230F1B33'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23C9A24B' stroke-width='2'/%3E%3Cpath d='M10 16l4 4 8-9' fill='none' stroke='%23C9A24B' stroke-width='2.4'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;0,9..144,900;1,9..144,600&family=Public+Sans:wght@400;500;600&family=Special+Elite&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add('js')</script>
 <style>
 :root{
-  --bg:#0D0D0B; --surface:#141411; --deep:#070706; --paper:#FBF8F1; --ink:#11110F; --ink2:#2A2926;
-  --text:#F2EDE2; --muted:rgba(242,237,226,.64); --faint:rgba(242,237,226,.42); --line:rgba(242,237,226,.14);
-  --accent:#E8472A; --on-accent:#0D0D0B;
-  --on-dark:#F2EDE2; --on-dark-muted:rgba(242,237,226,.64); --line-dark:rgba(242,237,226,.14);
-  --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
-  --sans:"Inter Tight",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
-  --ease:cubic-bezier(.22,1,.36,1);
-  --gutter:clamp(20px,4.4vw,64px);
+  --paper:#F2E9D4; --paper2:#E9DEC3; --card:#FBF5E6; --ink:#15213B; --navy:#0F1B33;
+  --red:#C0392B; --green:#1E7B4B; --violet:#5B3A9C; --slate:#4B5D73; --gold:#C9A24B;
+  --line:rgba(21,33,59,.28); --muted:rgba(21,33,59,.7);
+  --serif:"Fraunces",Georgia,"Times New Roman",serif;
+  --type:"Special Elite","Courier New",monospace;
+  --sans:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --gutter:clamp(18px,4vw,60px);
 }
-html,body{background:var(--bg);color:var(--text);color-scheme:dark}
-body::before{content:"";position:fixed;inset:0;z-index:100;pointer-events:none;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+html,body{background:var(--paper);color:var(--ink)}
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{font-family:var(--sans);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-anchor:none}
+body{overflow-anchor:none}
+body{font-family:var(--sans);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  background-image:repeating-radial-gradient(circle at 18% 6%,transparent 0 13px,rgba(21,33,59,.035) 13px 14px),repeating-radial-gradient(circle at 86% 94%,transparent 0 13px,rgba(192,57,43,.03) 13px 14px)}
 a{color:inherit}
-:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
-.wrap{max-width:1360px;margin:0 auto;padding:0 var(--gutter)}
-.mono{font-family:var(--mono)}
-.eyebrow{font:500 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.eyebrow b{color:var(--accent);font-weight:500}
-h1,h2,h3{font-family:var(--serif);font-weight:400;letter-spacing:-.02em;line-height:.98}
-h2{font-size:clamp(40px,5.6vw,84px);max-width:16ch}
-h2 em,h1 em{font-style:italic;color:var(--accent)}
+:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+.wrap{max-width:1280px;margin:0 auto;padding:0 var(--gutter)}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:800;letter-spacing:-.02em;line-height:1}
+h2{font-size:clamp(38px,5.4vw,80px);max-width:17ch}
+h2 em,h1 em{font-style:italic;font-weight:600;color:var(--red)}
+.pg{font:400 13px/1 var(--type);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:12px}
+.pg b{font-weight:400;border:2px solid var(--ink);padding:5px 8px;color:var(--ink)}
+section{position:relative;padding:clamp(60px,8vw,120px) 0}
+.perf{height:22px;background:radial-gradient(circle at 11px 11px,var(--paper) 5px,transparent 5.5px) 0 0/22px 22px repeat-x;border-top:2px dashed var(--line);margin-top:0}
 .lede{font-size:clamp(17px,1.5vw,20px);color:var(--muted);max-width:56ch}
-section{padding:clamp(72px,10vw,150px) 0;position:relative}
-.rule{border:0;border-top:1px solid var(--line)}
+.js .reveal{opacity:0;transform:translateY(24px) rotate(-.4deg);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--i,0)*90ms)}
+.js .reveal.in{opacity:1;transform:none}
 
-/* reveal: content stays visible without JS */
-.js .reveal{opacity:0;transform:translateY(22px);filter:blur(6px);transition:opacity .9s var(--ease),transform .9s var(--ease),filter .9s var(--ease);transition-delay:calc(var(--i,0)*90ms)}
-.js .reveal.in{opacity:1;transform:none;filter:none}
+nav{position:fixed;top:0;left:0;right:0;z-index:60;background:var(--navy);color:var(--card);border-bottom:3px double var(--gold)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;gap:20px;height:60px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;font:800 21px/1 var(--serif);letter-spacing:-.01em}
+.brand svg{width:34px;height:34px}
+.links{display:flex;gap:26px;font:500 12.5px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase}
+.links a{text-decoration:none;opacity:.8;padding:6px 0;border-bottom:2px solid transparent}
+.links a:hover{opacity:1;border-color:var(--gold)}
+.btn{display:inline-flex;align-items:center;gap:10px;font:600 15px/1 var(--sans);letter-spacing:.04em;text-decoration:none;padding:14px 22px;border:2px solid var(--ink);background:var(--ink);color:var(--card);border-radius:3px;transition:transform .15s,box-shadow .15s;cursor:pointer}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--red)}
+.btn.alt{background:transparent;color:var(--ink)}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+.btn.sm{padding:10px 16px;font-size:13.5px}
 
-/* nav */
-nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:14px 0;transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
-nav.stuck{background:rgba(13,13,11,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-color:var(--line)}
-.nav-in{display:flex;align-items:center;justify-content:space-between;gap:24px}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font:600 16px/1 var(--sans);letter-spacing:-.01em}
-.dot{width:12px;height:12px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(217,58,29,.16)}
-.links{display:flex;gap:30px;font-size:14.5px}
-.links a{text-decoration:none;color:var(--muted);transition:color .2s}
-.links a:hover{color:var(--text)}
-.btn{display:inline-flex;align-items:center;gap:10px;padding:13px 22px;border-radius:999px;font:500 15px/1 var(--sans);text-decoration:none;border:1px solid var(--text);transition:transform .35s var(--ease),background .25s,color .25s;cursor:pointer}
-.btn:hover{transform:translateY(-2px)}
-.btn.solid{background:var(--text);color:var(--bg)}
-.btn.solid:hover{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
-.btn.ghost{background:transparent;color:var(--text);border-color:var(--line)}
-.btn.ghost:hover{background:var(--text);color:var(--bg);border-color:var(--text)}
-.btn.sm{padding:10px 18px;font-size:14px}
-.btn svg{width:15px;height:15px;transition:transform .35s var(--ease)}
-.btn:hover svg{transform:translate(3px,-3px)}
+/* hero: an open passport */
+.hero{padding-top:calc(60px + clamp(30px,5vw,70px));padding-bottom:clamp(40px,6vw,90px)}
+.spread{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);background:var(--card);border:3px solid var(--navy);border-radius:6px;box-shadow:12px 12px 0 var(--navy);overflow:hidden}
+.spread::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:60px;transform:translateX(-50%);background:linear-gradient(90deg,transparent,rgba(21,33,59,.16) 48%,rgba(21,33,59,.28) 50%,rgba(21,33,59,.16) 52%,transparent);pointer-events:none;z-index:3}
+.leaf{padding:clamp(26px,3.6vw,56px);position:relative}
+.leaf.left{border-right:0}
+.leaf.right{background:repeating-linear-gradient(0deg,transparent 0 31px,rgba(21,33,59,.1) 31px 32px),var(--paper2)}
+.hero h1{font-size:clamp(46px,6.6vw,104px);line-height:.92;margin:18px 0 22px}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.sheetno{position:absolute;top:14px;right:18px;font:400 12px/1 var(--type);letter-spacing:.12em;color:var(--muted)}
+.mini{font:400 14px/1.9 var(--type);color:var(--ink);position:relative;z-index:1;padding-top:6px}
+.mini .ln{display:block;padding:0 8px;margin:0 -8px}
+.mini .ln.mark{background:linear-gradient(transparent 12%,rgba(255,213,0,.55) 12% 90%,transparent 90%)}
+.stampwrap{position:absolute;right:clamp(14px,3vw,40px);bottom:clamp(14px,3vw,34px);width:clamp(150px,19vw,250px);z-index:4}
+.stamp{width:100%;height:auto;display:block;color:var(--violet);transform:rotate(-8deg);filter:url(#rough);opacity:.92;cursor:pointer}
+.stamp.slam{animation:slam .7s cubic-bezier(.2,.9,.3,1.1) both}
+@keyframes slam{0%{transform:scale(2.4) rotate(-22deg);opacity:0}55%{transform:scale(.92) rotate(-6deg);opacity:1}75%{transform:scale(1.04) rotate(-9deg)}100%{transform:scale(1) rotate(-8deg);opacity:.92}}
+.mrz{margin-top:22px;font:400 clamp(11px,1.5vw,18px)/1.5 var(--type);letter-spacing:.12em;white-space:nowrap;overflow:hidden;background:var(--card);border:2px solid var(--navy);padding:10px 14px;color:var(--ink)}
+.facts{display:flex;flex-wrap:wrap;gap:8px 30px;margin-top:22px;font:400 13px/1.4 var(--type);color:var(--muted)}
+.facts b{color:var(--ink);font-weight:400}
 
-/* hero */
-.hero{padding-top:clamp(120px,15vh,170px);padding-bottom:clamp(8px,2vw,24px)}
-.hero h1{font-size:clamp(54px,10.4vw,168px);line-height:.9;letter-spacing:-.035em;max-width:11ch;margin:26px 0 30px}
-.hero-sub{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,5vw,80px);align-items:end}
-.cta{display:flex;flex-wrap:wrap;gap:12px}
-.meta{display:flex;flex-wrap:wrap;gap:10px 34px;margin-top:clamp(36px,5vw,64px);padding-top:22px;border-top:1px solid var(--line);font:500 13px/1.3 var(--mono);color:var(--muted)}
-.meta b{color:var(--text);font-weight:500}
-.hero::before{content:"";position:absolute;inset:-10% -10% auto auto;width:70vw;height:70vw;max-width:900px;max-height:900px;background:radial-gradient(closest-side,rgba(232,71,42,.16),transparent);pointer-events:none;z-index:0}
-.hero .wrap{position:relative;z-index:1}
-.hero{position:relative;overflow:hidden}
+/* head */
+.head{margin-bottom:clamp(24px,4vw,44px)}
+.head h2{margin-top:16px}
 
-/* demo: step-by-step trace */
-#demo h2{max-width:none}
-.demo-head{display:flex;justify-content:space-between;align-items:end;gap:32px;flex-wrap:wrap;margin-bottom:34px}
-.controls{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
-.tabs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px}
+/* desk replay */
+.deskbar{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:22px}
+.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 2px 0}
 .tabs::-webkit-scrollbar{display:none}
-.tab{flex:none;padding:10px 18px;border-radius:999px;border:1px solid var(--line);background:transparent;font:500 14px/1 var(--sans);color:var(--muted);cursor:pointer;transition:all .25s}
-.tab:hover{border-color:var(--text);color:var(--text)}
-.tab[aria-selected=true]{background:var(--text);border-color:var(--text);color:var(--bg)}
-.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px}
-.seg button{border:0;background:transparent;padding:8px 16px;border-radius:999px;font:500 13.5px/1 var(--sans);color:var(--muted);cursor:pointer;transition:all .25s}
-.seg button[aria-pressed=true]{background:var(--accent);color:var(--on-accent)}
-.trace{border-radius:22px;background:var(--deep);box-shadow:0 0 0 1px var(--line),0 40px 90px -30px rgba(0,0,0,.8);overflow:hidden}
-.bar{display:flex;align-items:center;gap:8px;padding:14px clamp(20px,3vw,40px);border-bottom:1px solid var(--line);font:500 12px/1 var(--mono);letter-spacing:.04em;color:var(--faint)}
-.bar i{width:10px;height:10px;border-radius:50%;background:rgba(242,237,226,.16);flex:none}
-.bar span{margin-left:10px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.replay{flex:none;border:1px solid var(--line);background:transparent;color:var(--text);border-radius:999px;padding:8px 14px;font:500 12px/1 var(--mono);cursor:pointer;transition:all .25s}
-.replay:hover{background:var(--text);color:var(--bg)}
-.tstep{display:grid;grid-template-columns:34px minmax(0,1fr);gap:0 16px;padding:26px clamp(20px,3vw,40px);border-bottom:1px solid var(--line)}
+.tab{flex:none;padding:12px 18px 10px;border:2px solid var(--ink);border-bottom:0;border-radius:8px 8px 0 0;background:var(--paper2);font:500 14px/1 var(--sans);color:var(--muted);cursor:pointer}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected=true]{background:var(--ink);color:var(--card)}
+.seg{display:inline-flex;border:2px solid var(--ink);border-radius:3px}
+.seg button{border:0;background:var(--card);padding:11px 16px;font:500 13.5px/1 var(--sans);color:var(--muted);cursor:pointer}
+.seg button+button{border-left:2px solid var(--ink)}
+.seg button[aria-pressed=true]{background:var(--red);color:var(--card)}
+.trace{background:var(--card);border:3px solid var(--navy);border-radius:0 6px 6px 6px;box-shadow:10px 10px 0 var(--navy)}
+.bar{display:flex;align-items:center;gap:10px;padding:12px clamp(16px,3vw,34px);border-bottom:2px dashed var(--line);font:400 13px/1 var(--type);letter-spacing:.04em;color:var(--muted)}
+.bar span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.replay{border:2px solid var(--ink);background:transparent;color:var(--ink);padding:8px 12px;font:500 12px/1 var(--sans);letter-spacing:.06em;cursor:pointer;border-radius:3px}
+.replay:hover{background:var(--ink);color:var(--card)}
+.tstep{display:grid;grid-template-columns:44px minmax(0,1fr);gap:0 18px;padding:26px clamp(16px,3vw,34px);border-bottom:2px dashed var(--line)}
 .tstep:last-child{border-bottom:0}
-.js .tstep{opacity:0;transform:translateY(10px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.js .tstep{opacity:0;transform:translateY(10px);transition:opacity .5s,transform .5s}
 .js .tstep.on{opacity:1;transform:none}
-.tno{font:500 12px/1.6 var(--mono);color:var(--accent)}
-.tstep h3{font:500 12px/1.6 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:14px}
-.tstep pre{font:400 13.5px/1.75 var(--mono);white-space:pre-wrap;word-break:break-word;color:var(--text)}
-.sys{color:var(--faint)}
+.tno{display:grid;place-items:center;width:40px;height:40px;border:2px solid var(--ink);border-radius:50%;font:400 15px/1 var(--type)}
+.tstep h3{font:400 13px/1.6 var(--type);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.tstep pre{font:400 14px/1.75 var(--type);white-space:pre-wrap;word-break:break-word;color:var(--ink)}
+.sys{color:var(--muted)}
 .sys.clip{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
-.linkbtn{background:none;border:0;color:var(--accent);font:500 12.5px/1 var(--mono);cursor:pointer;padding:8px 0 4px}
-.linkbtn:hover{text-decoration:underline}
-.adv{margin-top:14px;padding:16px 18px;border-radius:12px;background:var(--paper);color:var(--ink2)}
-.adv .ln{display:block;padding:0 8px;margin:0 -8px;border-radius:4px}
-.adv .ln.mark{background:rgba(232,71,42,.2);box-shadow:inset 3px 0 0 var(--accent);color:var(--ink)}
+.linkbtn{background:none;border:0;color:var(--red);font:500 13px/1 var(--sans);cursor:pointer;padding:8px 0 4px;text-decoration:underline}
+.adv{margin-top:14px;padding:18px 20px;background:#fffdf5;border:2px solid var(--ink);box-shadow:5px 5px 0 rgba(21,33,59,.22);transform:rotate(-.3deg)}
+.adv .ln{display:block;padding:0 8px;margin:0 -8px}
+.adv .ln.mark{background:linear-gradient(transparent 10%,rgba(255,213,0,.6) 10% 92%,transparent 92%)}
 .chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.chip{padding:7px 12px;border-radius:99px;border:1px solid var(--line);font:500 12.5px/1 var(--mono);color:var(--muted)}
-.chip.time{border-color:var(--accent);color:var(--accent);display:inline-flex;gap:8px;align-items:center}
-.spin{width:10px;height:10px;border-radius:50%;border:2px solid var(--accent);border-top-color:transparent;animation:sp .7s linear infinite}
-.chip.done .spin{animation:none;border-color:var(--accent);background:var(--accent)}
+.chip{padding:7px 12px;border:2px solid var(--ink);font:400 13px/1 var(--type);color:var(--ink)}
+.chip.time{border-color:var(--red);color:var(--red);display:inline-flex;gap:8px;align-items:center}
+.spin{width:10px;height:10px;border-radius:50%;border:2px solid var(--red);border-top-color:transparent;animation:sp .7s linear infinite}
+.chip.done .spin{animation:none;border-color:var(--red);background:var(--red)}
 @keyframes sp{to{transform:rotate(360deg)}}
-.caret::after{content:"";display:inline-block;width:8px;height:1.05em;background:var(--accent);margin-left:2px;vertical-align:text-bottom;animation:bl 1s steps(1) infinite}
+.caret::after{content:"";display:inline-block;width:9px;height:1.05em;background:var(--red);margin-left:2px;vertical-align:text-bottom;animation:bl 1s steps(1) infinite}
 @keyframes bl{50%{opacity:0}}
 .checks{list-style:none;display:grid;gap:8px}
-.checks li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;font:400 14.5px/1.55 var(--sans);color:var(--muted)}
-.checks li b{color:var(--text);font-weight:500}
-.checks li>span:first-child{width:18px;height:18px;border-radius:50%;margin-top:3px;background:var(--text) center/11px no-repeat}
-.checks .ok>span:first-child{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%230D0D0B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 6.2l2.4 2.4 4.6-5'/%3E%3C/svg%3E")}
-.checks .no>span:first-child{background-color:var(--accent);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%230D0D0B' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M3 3l6 6M9 3l-6 6'/%3E%3C/svg%3E")}
-.checks .no{color:var(--text)}
-.checks code{font:400 12.5px/1.5 var(--mono);color:var(--accent)}
-.answer{display:grid;grid-template-columns:minmax(0,auto) minmax(0,1fr);gap:clamp(18px,4vw,56px);align-items:end}
-.stance-big{font:400 clamp(54px,8vw,104px)/.9 var(--serif);letter-spacing:-.03em;color:var(--accent)}
-.stance-big.rej{color:var(--muted);font-size:clamp(34px,4.6vw,56px)}
-.answer p{font-size:15.5px;color:var(--muted);max-width:60ch}
-.answer p b{color:var(--text);font-weight:500}
-.own{margin-top:30px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(20px,4vw,60px);align-items:start;padding:28px clamp(20px,3vw,40px);border-radius:18px;border:1px solid var(--line)}
-.own h3{font-size:34px;margin-bottom:10px}
+.checks li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:10px;font:400 15px/1.55 var(--sans)}
+.checks li b{font-weight:600}
+.checks li>span:first-child{width:20px;height:20px;border:2px solid var(--ink);margin-top:3px;position:relative}
+.checks .ok>span:first-child{border-color:var(--green)}
+.checks .ok>span:first-child::after{content:"";position:absolute;left:3px;top:-3px;width:7px;height:13px;border:solid var(--green);border-width:0 3px 3px 0;transform:rotate(40deg)}
+.checks .no>span:first-child{border-color:var(--red)}
+.checks .no>span:first-child::before,.checks .no>span:first-child::after{content:"";position:absolute;left:7px;top:1px;width:3px;height:14px;background:var(--red);transform:rotate(45deg)}
+.checks .no>span:first-child::after{transform:rotate(-45deg)}
+.checks code{font:400 13px/1.5 var(--type);color:var(--red)}
+.answer{display:grid;grid-template-columns:minmax(0,auto) minmax(0,1fr);gap:clamp(18px,4vw,50px);align-items:center}
+.stance-big{display:inline-block;font:400 clamp(30px,5vw,60px)/1 var(--type);text-transform:uppercase;letter-spacing:.08em;padding:.28em .5em .22em;border:6px double currentColor;border-radius:6px;transform:rotate(-5deg);animation:slam .7s cubic-bezier(.2,.9,.3,1.1) both;color:var(--violet)}
+.stance-big.s-offers{color:var(--green)}.stance-big.s-excludes{color:var(--red)}.stance-big.s-unclear{color:var(--violet)}.stance-big.s-not_stated{color:var(--slate)}
+.stance-big.rej{color:var(--red);font-size:clamp(26px,4vw,44px)}
+.answer p{font-size:16px;color:var(--muted);max-width:60ch}
+.answer p b{color:var(--ink);font-weight:600}
+.own{margin-top:28px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(20px,4vw,56px);align-items:start;padding:26px clamp(18px,3vw,36px);border:2px dashed var(--ink);background:var(--paper2)}
+.own h3{font-size:32px;margin-bottom:10px}
 .own p{color:var(--muted);font-size:15.5px;max-width:48ch}
-.own .code{position:relative;margin:0}
-.copy{position:absolute;top:14px;right:14px;border:1px solid var(--line);background:transparent;color:var(--text);border-radius:99px;padding:6px 12px;font:500 11.5px/1 var(--mono);cursor:pointer}
-.copy:hover{background:var(--text);color:var(--bg)}
-.foot-note{margin-top:20px;font:400 13px/1.5 var(--mono);color:var(--muted)}
-@media(max-width:700px){.answer,.own{grid-template-columns:minmax(0,1fr)}.tstep{grid-template-columns:24px minmax(0,1fr);gap:0 10px}}
+.code{position:relative;white-space:pre;max-width:100%;background:var(--navy);color:var(--card);border:3px solid var(--navy);padding:24px 26px;font:400 14px/1.8 var(--type);overflow-x:auto;border-radius:4px}
+.code .c{color:#8f9bb3}.code .p{color:var(--gold)}
+.code+.code{margin-top:14px}
+.code-title{display:block;font:400 12px/1 var(--type);letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.copy{position:absolute;top:12px;right:12px;border:2px solid var(--gold);background:transparent;color:var(--gold);padding:6px 10px;font:500 11.5px/1 var(--sans);cursor:pointer;border-radius:3px}
+.copy:hover{background:var(--gold);color:var(--navy)}
+.foot-note{margin-top:18px;font:400 13px/1.6 var(--type);color:var(--muted);max-width:112ch}
 
-/* stats */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--text);margin-top:56px}
-.stat{padding:30px 26px 30px 0;border-right:1px solid var(--line)}
-.stat+.stat{padding-left:26px}
-.stat:last-child{border-right:0}
-.big{font:400 clamp(56px,7vw,112px)/.9 var(--serif);letter-spacing:-.03em;display:block;font-variant-numeric:tabular-nums}
-.stat .what{font-weight:500;margin-top:14px;display:block}
-.stat .vs{font:400 13px/1.4 var(--mono);color:var(--muted);margin-top:6px;display:block}
-.stat .vs i{font-style:normal;color:var(--accent)}
-.foot-note{margin-top:20px;font:400 13px/1.5 var(--mono);color:var(--muted)}
-
-/* arms */
-.arms{margin-top:56px;border-top:1px solid var(--line)}
-.arm{display:grid;grid-template-columns:minmax(150px,.7fr) minmax(0,2.4fr) 70px;gap:20px;align-items:center;padding:20px 0;border-bottom:1px solid var(--line)}
-.arm .nm{font-weight:500}
-.arm .nm small{display:block;font:400 12.5px/1.4 var(--mono);color:var(--muted);margin-top:4px}
-.track{height:12px;border-radius:99px;background:rgba(242,237,226,.1);overflow:hidden}
-.fill{height:100%;width:0;border-radius:99px;background:rgba(242,237,226,.72);transition:width 1.4s var(--ease)}
-.arm.win .fill{background:var(--accent)}
-.val{font:500 15px/1 var(--mono);text-align:right}
+/* results: visa sticker */
+.visa{position:relative;border-radius:14px;padding:4px;background:linear-gradient(120deg,#d8b45a,#f3e6b4 22%,#7fb7a6 45%,#c9a24b 62%,#e9d79d 80%,#a8b9d6);box-shadow:8px 8px 0 var(--navy)}
+.visa-in{background:var(--card);border-radius:11px;padding:clamp(20px,3vw,40px)}
+.visa-top{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font:400 12.5px/1 var(--type);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding-bottom:14px;border-bottom:2px dashed var(--line)}
+.nums{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:6px}
+.num{padding:24px 20px 10px 0}
+.num+.num{padding-left:20px;border-left:2px dashed var(--line)}
+.big{display:block;font:900 clamp(38px,4.7vw,76px)/.9 var(--serif);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.num .what{display:block;margin-top:12px;font-weight:600}
+.num .vs{display:block;margin-top:5px;font:400 13px/1.45 var(--type);color:var(--muted)}
+.num .vs i{font-style:normal;color:var(--red)}
+.arms{margin-top:44px}
+.arm{display:grid;grid-template-columns:minmax(150px,.7fr) minmax(0,2.4fr) 76px;gap:20px;align-items:center;padding:18px 0;border-bottom:2px dashed var(--line)}
+.arm:first-child{border-top:2px dashed var(--line)}
+.arm .nm{font-weight:600}
+.arm .nm small{display:block;font:400 12.5px/1.4 var(--type);color:var(--muted);margin-top:4px;font-weight:400}
+.track{height:18px;border:2px solid var(--ink);background:var(--card)}
+.fill{height:100%;width:0;background:repeating-linear-gradient(45deg,var(--ink) 0 6px,#2c3c5e 6px 12px);transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
+.arm.win .fill{background:repeating-linear-gradient(45deg,var(--red) 0 6px,#d2584a 6px 12px)}
+.val{font:400 17px/1 var(--type);text-align:right}
 .in .fill,.fill.go{width:var(--w)}
+.marks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:40px}
+.pm{position:relative;background:var(--card);border:2px solid var(--ink);padding:22px 20px 20px}
+.pm .no{font:400 12px/1 var(--type);letter-spacing:.12em;color:var(--muted)}
+.pm p{margin-top:10px;font-weight:600;line-height:1.3;padding-right:60px}
+.pm small{display:block;margin-top:6px;font:400 12.5px/1.45 var(--type);color:var(--muted);font-weight:400}
+.pm .met{position:absolute;right:12px;top:14px;font:400 13px/1 var(--type);letter-spacing:.14em;color:var(--green);border:3px double var(--green);padding:6px 7px 4px;border-radius:4px;transform:rotate(-9deg);filter:url(#rough)}
 
-/* marks */
-.marks{display:grid;grid-template-columns:repeat(2,1fr);gap:0 clamp(24px,5vw,80px);margin-top:48px}
-.mark{display:grid;grid-template-columns:42px 1fr auto;gap:14px;align-items:baseline;padding:20px 0;border-top:1px solid var(--line)}
-.mark .no{font:500 12px/1 var(--mono);color:var(--muted)}
-.mark p{font-size:16px}
-.mark p small{display:block;color:var(--muted);font-size:13.5px;margin-top:4px}
-.tick{width:22px;height:22px;border-radius:50%;background:var(--text);display:grid;place-items:center}
-.tick svg{width:12px;height:12px}
-
-/* honest */
-.dark{background:var(--surface);color:var(--on-dark);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.dark .lede,.dark .eyebrow{color:var(--on-dark-muted)}
-.dark h2{max-width:14ch}
-.honest{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,6vw,110px);align-items:end}
-.huge{font:400 clamp(120px,22vw,340px)/.8 var(--serif);letter-spacing:-.05em;color:var(--accent);display:block;font-variant-numeric:tabular-nums}
-.honest dl{display:grid;grid-template-columns:auto 1fr;gap:10px 28px;margin-top:34px;font:400 14px/1.5 var(--mono);border-top:1px solid var(--line-dark);padding-top:22px}
-.honest dt{color:var(--on-dark-muted)}
-.honest dd{color:var(--on-dark)}
+/* reality */
+.real{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,5vw,80px);align-items:center}
+.realstamp{position:relative;display:grid;place-items:center}
+.realstamp .ring{width:min(100%,380px);aspect-ratio:1;border:10px double var(--red);border-radius:50%;display:grid;place-items:center;transform:rotate(-8deg);filter:url(#rough);color:var(--red);text-align:center}
+.realstamp .huge{font:900 clamp(70px,11vw,150px)/.85 var(--serif);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.realstamp small{display:block;font:400 13px/1.3 var(--type);letter-spacing:.14em;text-transform:uppercase;margin-top:8px}
+.dl{display:grid;grid-template-columns:auto 1fr;gap:10px 24px;margin-top:26px;font:400 14px/1.5 var(--type);border-top:2px dashed var(--line);padding-top:18px}
+.dl dt{color:var(--muted)}
 
 /* how */
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:56px;border-top:1px solid var(--text)}
-.step{padding:28px 26px 8px 0}
-.step+.step{padding-left:26px;border-left:1px solid var(--line)}
-.step .no{font:500 12px/1 var(--mono);color:var(--accent)}
-.step h3{font-size:34px;margin:18px 0 12px}
-.step p{font-size:15.5px;color:var(--muted)}
-.stances{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:60px}
-.stance{padding:22px;border-radius:16px;background:var(--surface);border:1px solid var(--line)}
-.stance code{font:500 13px/1 var(--mono);padding:5px 10px;border-radius:99px;background:var(--text);color:var(--bg);display:inline-block}
-.stance:nth-child(3) code{background:var(--accent);color:var(--on-accent)}
-.stance p{margin-top:14px;font-size:14.5px;color:var(--muted)}
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:34px;border:3px solid var(--navy);background:var(--card);box-shadow:8px 8px 0 var(--navy)}
+.step{padding:26px 22px 22px;position:relative}
+.step+.step{border-left:2px dashed var(--line)}
+.step .no{display:inline-grid;place-items:center;width:38px;height:38px;border:2px solid var(--ink);border-radius:50%;font:400 14px/1 var(--type);margin-bottom:14px}
+.step h4{font-size:28px;margin-bottom:8px}
+.step p{font-size:15px;color:var(--muted)}
+.stances{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:34px}
+.st{background:var(--card);border:2px solid var(--ink);padding:22px 20px;text-align:center}
+.st .s{display:inline-block;font:400 18px/1 var(--type);letter-spacing:.1em;text-transform:uppercase;border:4px double currentColor;padding:.4em .6em .3em;border-radius:4px;transform:rotate(-4deg);filter:url(#rough)}
+.st:nth-child(1) .s{color:var(--green)}.st:nth-child(2) .s{color:var(--red)}.st:nth-child(3) .s{color:var(--violet)}.st:nth-child(4) .s{color:var(--slate)}
+.st p{margin-top:16px;font-size:14.5px;color:var(--muted)}
 
-/* limits + run */
-.limits{margin-top:44px;border-top:1px solid var(--text)}
-.limit{display:grid;grid-template-columns:60px 1fr;gap:20px;padding:20px 0;border-bottom:1px solid var(--line);max-width:960px}
-.limit span{font:500 12px/1.9 var(--mono);color:var(--accent)}
-.limit p{font-size:17px}
-.run{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(28px,5vw,90px);align-items:start}
-.run>*,.own>*,.honest>*{min-width:0}
-.code{white-space:pre;max-width:100%;background:var(--deep);border:1px solid var(--line);color:var(--on-dark);border-radius:18px;padding:26px 28px;font:400 14px/1.8 var(--mono);overflow-x:auto}
-.code .c{color:rgba(242,237,226,.45)}
-.code .p{color:var(--accent)}
-.code + .code{margin-top:14px}
-.code-title{font:500 11.5px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:rgba(242,237,226,.5);margin-bottom:14px;display:block}
+/* conditions */
+.cond{margin-top:8px;border-top:2px solid var(--ink);max-width:980px}
+.c1{display:grid;grid-template-columns:70px 1fr;gap:18px;padding:20px 0;border-bottom:2px solid var(--ink);align-items:start}
+.c1 span{font:400 13px/1.9 var(--type);color:var(--red);letter-spacing:.1em}
+.c1 p{font-size:18px}
+.dark{background:var(--navy);color:var(--card)}
+.dark h2,.dark .pg{color:var(--card)}
+.dark .pg b{border-color:var(--gold);color:var(--gold)}
+.dark .lede{color:rgba(251,245,230,.8)}
+.dark .btn.alt{color:var(--card);border-color:var(--card)}
+.run{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(28px,5vw,80px);align-items:start}
+.run>*{min-width:0}
+.dark .code{background:#0a1326;border-color:var(--gold)}
 
-footer{border-top:1px solid var(--line);padding:46px 0 60px;font-size:14.5px;color:var(--muted)}
+footer{background:var(--navy);color:var(--card);padding:44px 0 56px;border-top:3px double var(--gold);font-size:14.5px}
 .foot{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:32px}
-footer h4{font:500 11.5px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--text);margin-bottom:14px}
-footer a{display:block;text-decoration:none;padding:3px 0}
-footer a:hover{color:var(--accent)}
-.fine{margin-top:36px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;max-width:100ch}
+footer h4{font:400 12px/1 var(--type);letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+footer a{display:block;text-decoration:none;padding:3px 0;opacity:.85}
+footer a:hover{opacity:1;text-decoration:underline}
+.fine{margin-top:34px;padding-top:20px;border-top:2px dashed rgba(251,245,230,.25);font:400 12.5px/1.6 var(--type);max-width:112ch;opacity:.8}
 
-@media(max-width:980px){
+@media(max-width:1000px){
   .links{display:none}
-  .hero-sub,.honest,.run{grid-template-columns:minmax(0,1fr)}
-  .stage{grid-template-columns:1fr}
-  .pane{min-height:0}
-  .stats,.steps{grid-template-columns:1fr 1fr}
-  .stat:nth-child(2){border-right:0}
-  .stat:nth-child(3){padding-left:0}
-  .stat:nth-child(n+3){border-top:1px solid var(--line)}
-  .step:nth-child(3){padding-left:0;border-left:0}
-  .step:nth-child(n+3){border-top:1px solid var(--line);margin-top:20px}
-  .stances{grid-template-columns:1fr 1fr}
-  .marks{grid-template-columns:1fr}
+  .spread{grid-template-columns:minmax(0,1fr)}
+  .spread::before{display:none}
+  .leaf.right{min-height:420px}
+  .nums,.steps,.stances{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .num:nth-child(3){padding-left:0;border-left:0}
+  .num:nth-child(n+3){border-top:2px dashed var(--line);margin-top:8px}
+  .step:nth-child(3){border-left:0}
+  .step:nth-child(n+3){border-top:2px dashed var(--line)}
+  .marks{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .real,.run,.own{grid-template-columns:minmax(0,1fr)}
   .foot{grid-template-columns:1fr 1fr}
-  .arm{grid-template-columns:1fr 60px}
-  .arm .track{grid-column:1/-1;order:3}
 }
 @media(max-width:560px){
   body{font-size:16px}
-  .stats,.steps,.stances{grid-template-columns:1fr}
-  .stat,.stat+.stat{padding:24px 0;border-right:0;border-top:1px solid var(--line)}
-  .step+.step,.step:nth-child(3){padding-left:0;border-left:0;border-top:1px solid var(--line);margin-top:20px}
+  .brand{font-size:17px}
+  .nav-in .btn{display:none}
+  .nums,.steps,.stances,.marks{grid-template-columns:minmax(0,1fr)}
+  .num,.num+.num{padding:20px 0;border-left:0;border-top:2px dashed var(--line)}
+  .step+.step{border-left:0;border-top:2px dashed var(--line)}
+  .answer{grid-template-columns:minmax(0,1fr)}
+  .arm{grid-template-columns:minmax(0,1fr) 64px}
+  .arm .track{grid-column:1/-1;order:3}
   .foot{grid-template-columns:1fr}
-  .nav-in .btn{padding:9px 16px;font-size:13.5px}
-  .mark{grid-template-columns:34px 1fr auto}
+  .stampwrap{width:140px}
 }
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .js .reveal{opacity:1;transform:none;filter:none;transition:none}
-  .json .jl{opacity:1;transform:none;animation:none}
+  .js .reveal{opacity:1;transform:none;transition:none}
   .fill{transition:none}
+  .stamp.slam,.stance-big{animation:none}
 }
 </style>
 </head>
 <body>
 
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <filter id="rough" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2"/></filter>
+</svg>
+
 <nav id="nav">
   <div class="wrap nav-in">
-    <a class="brand" href="#top" aria-label="sponsor-scout, home"><span class="dot"></span>sponsor-scout</a>
-    <div class="links">
-      <a href="#demo">Demo</a><a href="#results">Results</a><a href="#how">How it works</a><a href="#limits">Limits</a><a href="#run">Run it</a>
-    </div>
-    <a class="btn solid sm" href="https://github.com/Onkar-Gupta/sponsor-scout">GitHub
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12L12 4M5.5 4H12v6.5"/></svg></a>
+    <a class="brand" href="#top" aria-label="sponsor-scout, home"><svg viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="16" fill="none" stroke="#C9A24B" stroke-width="2"/><circle cx="17" cy="17" r="12" fill="none" stroke="#C9A24B" stroke-width="1" stroke-dasharray="2 2"/><path d="M10.5 17.5l4.5 4.5 8.5-10" fill="none" stroke="#C9A24B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>sponsor-scout</a>
+    <div class="links"><a href="#desk">The desk</a><a href="#results">Results</a><a href="#how">How it works</a><a href="#limits">Limits</a><a href="#run">Run it</a></div>
+    <a class="btn gold sm" href="https://github.com/Onkar-Gupta/sponsor-scout">GitHub</a>
   </div>
 </nav>
 
 <main id="top">
 <header class="hero">
   <div class="wrap">
-    <p class="eyebrow reveal"><b>●</b>&nbsp; Open source &nbsp;·&nbsp; MIT &nbsp;·&nbsp; v1.0.0</p>
-    <h1 class="reveal" style="--i:1">Does this job <em>sponsor</em> a visa?</h1>
-    <div class="hero-sub">
-      <p class="lede reveal" style="--i:2">Paste a UK job advert. Get clean JSON and a straight answer. A 3.8 billion parameter model, tuned on one laptop GPU, and tested against pass marks that were written down before any result existed.</p>
-      <div class="cta reveal" style="--i:3">
-        <a class="btn solid" href="#demo">See it read an advert</a>
-        <a class="btn ghost" href="#results">Read the results</a>
+    <div class="spread reveal">
+      <div class="leaf left">
+        <div class="pg"><b>FORM SS-1</b><span>UK job advert check &middot; v1.0.0</span></div>
+        <h1>Will they <em>sponsor</em> your visa?</h1>
+        <p class="lede">Paste a UK job advert. Get clean JSON and a straight answer, from a 3.8 billion parameter model tuned on one laptop GPU and tested against pass marks written down before any result existed.</p>
+        <div class="cta"><a class="btn" href="#desk">Follow an advert through the desk</a><a class="btn alt" href="#results">Read the results</a></div>
+        <div class="facts"><span><b>6 of 6</b> pass marks met</span><span><b>50</b> test adverts</span><span><b>54 min</b> to train</span><span><b>10</b> real adverts checked</span></div>
       </div>
-    </div>
-    <div class="meta reveal" style="--i:4">
-      <span><b>6 of 6</b> pre-registered pass marks met</span>
-      <span><b>50</b> test adverts, each arm run once</span>
-      <span><b>54 min</b> to train on an 8 GB GPU</span>
-      <span><b>10</b> real adverts as a reality check</span>
-    </div>
-  </div>
-</header>
-
-<section id="demo" style="padding-top:clamp(36px,5vw,64px)">
-  <div class="wrap">
-    <div class="demo-head">
-      <div>
-        <p class="eyebrow reveal">Try it</p>
-        <h2 class="reveal" style="--i:1;margin-top:18px">Watch one advert <em>go through</em>.</h2>
-      </div>
-      <div class="controls reveal" style="--i:2">
-        <div class="tabs" role="tablist" aria-label="Choose an advert" id="tabs"></div>
-        <div class="seg" role="group" aria-label="Choose a model">
-          <button type="button" id="m-tuned" aria-pressed="true">Tuned</button>
-          <button type="button" id="m-prompt" aria-pressed="false">Prompt only</button>
+      <div class="leaf right">
+        <span class="sheetno">SHEET 1 OF 1</span>
+        <div class="mini" aria-label="A sample advert with the two contradicting sponsorship lines highlighted">
+          <span class="ln">ROLE: Forklift Operator</span><span class="ln">CO: Zilorton Systems</span><span class="ln">LOC: Inverness</span><span class="ln">PAY: &pound;24k - &pound;32k</span><span class="ln">NEED: shipment tracking, demand planning</span>
+          <span class="ln mark">NOTE: We are unable to sponsor candidates for this role.</span><span class="ln">CLOSES: 11 January 2027</span>
+          <span class="ln mark">NOTE: We are happy to sponsor the right overseas applicant.</span>
+        </div>
+        <div class="stampwrap">
+          <svg class="stamp slam" id="stamp" viewBox="0 0 200 200" role="img" aria-label="Stamp reading UNCLEAR">
+            <defs><path id="arcT" d="M28,100a72,72 0 1,1 144,0"/><path id="arcB" d="M18,100a82,82 0 0,0 164,0"/></defs>
+            <circle cx="100" cy="100" r="94" fill="none" stroke="currentColor" stroke-width="7"/>
+            <circle cx="100" cy="100" r="84" fill="none" stroke="currentColor" stroke-width="2"/>
+            <circle cx="100" cy="100" r="52" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text font-family="Special Elite, monospace" font-size="15" letter-spacing="2.5" fill="currentColor"><textPath href="#arcT" startOffset="50%" text-anchor="middle">SPONSOR-SCOUT</textPath></text>
+            <text font-family="Special Elite, monospace" font-size="15" letter-spacing="2.5" fill="currentColor"><textPath href="#arcB" startOffset="50%" text-anchor="middle" side="left">UK JOB ADVERT CHECK</textPath></text>
+            <text x="100" y="109" text-anchor="middle" font-family="Special Elite, monospace" font-size="27" letter-spacing="1" fill="currentColor" id="stampword">UNCLEAR</text>
+          </svg>
         </div>
       </div>
     </div>
+    <div class="mrz reveal" style="--i:2" aria-hidden="true">SPONSOR&lt;SCOUT&lt;&lt;UK&lt;JOB&lt;ADVERTS&lt;&lt;V1&lt;0&lt;0&lt;&lt;0.993&lt;FIELD&lt;ACC&lt;&lt;0.979&lt;SPONSOR&lt;F1&lt;&lt;0.000&lt;INVENTED&lt;&lt;&lt;&lt;&lt;&lt;&lt;</div>
+  </div>
+</header>
+
+<div class="perf"></div>
+
+<section id="desk">
+  <div class="wrap">
+    <div class="head reveal"><div class="pg"><b>PAGE 02</b><span>The desk, one advert at a time</span></div><h2>Follow one advert through the <em>desk</em>.</h2></div>
+    <div class="deskbar reveal" style="--i:1">
+      <div class="tabs" role="tablist" aria-label="Choose an advert" id="tabs"></div>
+      <div class="seg" role="group" aria-label="Choose a model"><button type="button" id="m-tuned" aria-pressed="true">Tuned</button><button type="button" id="m-prompt" aria-pressed="false">Prompt only</button></div>
+    </div>
     <div class="trace reveal" style="--i:1">
-      <div class="bar"><i></i><i></i><i></i><span id="bar-cmd"></span><button class="replay" id="replay" type="button">&#8635; Replay</button></div>
+      <div class="bar"><span id="bar-cmd"></span><button class="replay" id="replay" type="button">&#8635; Replay</button></div>
       <div id="tsteps" aria-live="polite"></div>
     </div>
     <p class="foot-note">A replay of the real official run: the exact prompt, the exact text the model wrote, and the same checks that scored it. The adverts are synthetic test adverts (CC0).</p>
     <div class="own reveal">
-      <div>
-        <h3>Want to try your own advert?</h3>
-        <p>Not on this page. The model needs a GPU, and a public demo would need a paid server. Run it on your own machine instead: paste any advert into a text file and use the command on the right.</p>
-      </div>
+      <div><h3>Want to try your own advert?</h3><p>Not on this page. The model needs a GPU, and a public demo would need a paid server. Run it on your own machine instead: paste any advert into a text file and use the command on the right.</p></div>
       <div class="code"><button class="copy" id="copy" type="button">Copy</button><span class="code-title">Your own advert</span><span class="c"># after cloning and training, see Run it below</span>
 <span class="p">$</span> sponsor-scout extract --file advert.txt \
     --arm tuned --adapter outputs/adapters/r16_lr2e-4_e2</div>
@@ -310,19 +320,21 @@ footer a:hover{color:var(--accent)}
   </div>
 </section>
 
-<hr class="rule">
+<div class="perf"></div>
 
 <section id="results">
   <div class="wrap">
-    <p class="eyebrow reveal">Results · 50 synthetic test adverts</p>
-    <h2 class="reveal" style="--i:1;margin-top:18px">Tuning beat a good prompt <em>by 25 points</em>.</h2>
-    <div class="stats">
-      <div class="stat reveal"><span class="big" data-count="0.993" data-dec="3">0.993</span><span class="what">Mean field accuracy</span><span class="vs">prompt only <i>0.736</i></span></div>
-      <div class="stat reveal" style="--i:1"><span class="big" data-count="0.979" data-dec="3">0.979</span><span class="what">Sponsorship macro-F1</span><span class="vs">prompt only <i>0.710</i></span></div>
-      <div class="stat reveal" style="--i:2"><span class="big" data-count="0" data-dec="3">0.000</span><span class="what">Invented values</span><span class="vs">prompt only <i>0.342</i></span></div>
-      <div class="stat reveal" style="--i:3"><span class="big" data-count="1" data-dec="2">1.00</span><span class="what">Valid JSON</span><span class="vs">prompt only <i>0.82</i></span></div>
-    </div>
-    <p class="foot-note">An invented value is a made-up answer for a field the advert leaves empty. Lower is better. Phi-4-mini-instruct, 4-bit, greedy decoding.</p>
+    <div class="head reveal"><div class="pg"><b>PAGE 03</b><span>Results at the counter &middot; 50 synthetic test adverts</span></div><h2>Tuning beat a good prompt by <em>25 points</em>.</h2></div>
+    <div class="visa reveal"><div class="visa-in">
+      <div class="visa-top"><span>Visa sticker &middot; model card</span><span>Phi-4-mini &middot; 4-bit &middot; greedy</span><span>Each arm run once</span></div>
+      <div class="nums">
+        <div class="num"><span class="big" data-count="0.993" data-dec="3">0.993</span><span class="what">Mean field accuracy</span><span class="vs">prompt only <i>0.736</i></span></div>
+        <div class="num"><span class="big" data-count="0.979" data-dec="3">0.979</span><span class="what">Sponsorship macro-F1</span><span class="vs">prompt only <i>0.710</i></span></div>
+        <div class="num"><span class="big" data-count="0" data-dec="3">0.000</span><span class="what">Invented values</span><span class="vs">prompt only <i>0.342</i></span></div>
+        <div class="num"><span class="big" data-count="1" data-dec="2">1.00</span><span class="what">Valid JSON</span><span class="vs">prompt only <i>0.82</i></span></div>
+      </div>
+    </div></div>
+    <p class="foot-note">An invented value is a made-up answer for a field the advert leaves empty. Lower is better.</p>
 
     <div class="arms" id="arms">
       <div class="arm reveal"><div class="nm">Zero-shot<small>every output broke the schema</small></div><div class="track"><div class="fill" style="--w:0%"></div></div><div class="val">0.000</div></div>
@@ -333,87 +345,85 @@ footer a:hover{color:var(--accent)}
     <p class="foot-note">Mean field accuracy by arm. Constrained decoding fixes the format, not the judgement.</p>
 
     <div class="marks">
-      <div class="mark reveal"><span class="no">01</span><p>Tuned beats the prompt by at least 5 points<small>+25.8 points, interval 16.4 to 36.4</small></p><span class="tick"><svg viewBox="0 0 12 12" fill="none" stroke="#0D0D0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.2l2.4 2.4 4.6-5"/></svg></span></div>
-      <div class="mark reveal" style="--i:1"><span class="no">02</span><p>Holds on styles never seen in training<small>+31.6 points on 25 adverts, interval 16.0 to 48.4</small></p><span class="tick"><svg viewBox="0 0 12 12" fill="none" stroke="#0D0D0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.2l2.4 2.4 4.6-5"/></svg></span></div>
-      <div class="mark reveal"><span class="no">03</span><p>Sponsorship macro-F1 at least the prompt's<small>0.979 against 0.710, difference interval 0.15 to 0.41</small></p><span class="tick"><svg viewBox="0 0 12 12" fill="none" stroke="#0D0D0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.2l2.4 2.4 4.6-5"/></svg></span></div>
-      <div class="mark reveal" style="--i:1"><span class="no">04</span><p>Valid JSON at least 0.99<small>1.000, 95% Wilson lower bound 0.929</small></p><span class="tick"><svg viewBox="0 0 12 12" fill="none" stroke="#0D0D0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.2l2.4 2.4 4.6-5"/></svg></span></div>
-      <div class="mark reveal"><span class="no">05</span><p>No more invented values than the prompt<small>0.000 against 0.342, difference interval -0.47 to -0.23</small></p><span class="tick"><svg viewBox="0 0 12 12" fill="none" stroke="#0D0D0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.2l2.4 2.4 4.6-5"/></svg></span></div>
-      <div class="mark reveal" style="--i:1"><span class="no">06</span><p>General ability within 2 points (MMLU)<small>0.629 against 0.631 on 1,000 questions</small></p><span class="tick"><svg viewBox="0 0 12 12" fill="none" stroke="#0D0D0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.2l2.4 2.4 4.6-5"/></svg></span></div>
+      <div class="pm reveal"><span class="no">MARK 01</span><p>Tuned beats the prompt by at least 5 points<small>+25.8 points, interval 16.4 to 36.4</small></p><span class="met">MET</span></div>
+      <div class="pm reveal" style="--i:1"><span class="no">MARK 02</span><p>Holds on styles never seen in training<small>+31.6 points on 25 adverts, interval 16.0 to 48.4</small></p><span class="met">MET</span></div>
+      <div class="pm reveal" style="--i:2"><span class="no">MARK 03</span><p>Sponsorship macro-F1 at least the prompt's<small>0.979 against 0.710, difference interval 0.15 to 0.41</small></p><span class="met">MET</span></div>
+      <div class="pm reveal"><span class="no">MARK 04</span><p>Valid JSON at least 0.99<small>1.000, 95% Wilson lower bound 0.929</small></p><span class="met">MET</span></div>
+      <div class="pm reveal" style="--i:1"><span class="no">MARK 05</span><p>No more invented values than the prompt<small>0.000 against 0.342, difference interval -0.47 to -0.23</small></p><span class="met">MET</span></div>
+      <div class="pm reveal" style="--i:2"><span class="no">MARK 06</span><p>General ability within 2 points (MMLU)<small>0.629 against 0.631 on 1,000 questions</small></p><span class="met">MET</span></div>
     </div>
   </div>
 </section>
 
-<section class="dark" id="real">
-  <div class="wrap honest">
-    <div>
-      <p class="eyebrow reveal">The honest bit</p>
-      <h2 class="reveal" style="--i:1;margin:18px 0 26px">Then I tried <em>real</em> adverts.</h2>
-      <p class="lede reveal" style="--i:2">Ten real UK adverts from LinkedIn, labelled with the same guide before any model saw them. The tuned model fell from 0.993 to 0.700. This is a smoke check, not a measurement, and it is why the README leads with its limits.</p>
-      <dl class="reveal" style="--i:3">
-        <dt>Valid JSON</dt><dd>9 of 10 (prompt only: 5 of 10)</dd>
-        <dt>Sponsorship accuracy</dt><dd>0.60 (prompt only: 0.10)</dd>
-        <dt>Not in this set</dt><dd>closing dates, hourly or daily pay</dd>
-      </dl>
+<div class="perf"></div>
+
+<section id="real">
+  <div class="wrap">
+    <div class="real">
+      <div class="reveal">
+        <div class="pg"><b>PAGE 04</b><span>The honest bit</span></div>
+        <h2 style="margin:18px 0 22px">Then I tried <em>real</em> adverts.</h2>
+        <p class="lede">Ten real UK adverts from LinkedIn, labelled with the same guide before any model saw them. The tuned model fell from 0.993 to 0.700. This is a smoke check, not a measurement, and it is why the README leads with its limits.</p>
+        <dl class="dl"><dt>Valid JSON</dt><dd>9 of 10 (prompt only: 5 of 10)</dd><dt>Sponsorship accuracy</dt><dd>0.60 (prompt only: 0.10)</dd><dt>Not in this set</dt><dd>closing dates, hourly or daily pay</dd></dl>
+      </div>
+      <div class="realstamp reveal" style="--i:2"><div class="ring"><div><span class="huge" data-count="0.7" data-dec="3">0.700</span><small>mean field accuracy<br>on real adverts</small></div></div></div>
     </div>
-    <span class="huge reveal" style="--i:2" data-count="0.7" data-dec="3" aria-label="0.700 mean field accuracy on real adverts">0.700</span>
   </div>
 </section>
+
+<div class="perf"></div>
 
 <section id="how">
   <div class="wrap">
-    <p class="eyebrow reveal">How it works</p>
-    <h2 class="reveal" style="--i:1;margin-top:18px">Four steps, <em>no</em> magic.</h2>
-    <div class="steps">
-      <div class="step reveal"><span class="no">01</span><h3>Generate</h3><p>2,900 synthetic adverts with known labels from original templates. Employers are fictional. Test styles never appear in training.</p></div>
-      <div class="step reveal" style="--i:1"><span class="no">02</span><h3>Tune</h3><p>A LoRA adapter on Phi-4-mini: rank 16, two epochs, 250 steps, 3.57 GiB of GPU memory.</p></div>
-      <div class="step reveal" style="--i:2"><span class="no">03</span><h3>Freeze</h3><p>Settings were picked on a dev split only, then written into the protocol before the test split was touched.</p></div>
-      <div class="step reveal" style="--i:3"><span class="no">04</span><h3>Test once</h3><p>Every arm ran once on the test adverts. Failures are published as failed. Nothing was rerun.</p></div>
+    <div class="head reveal"><div class="pg"><b>PAGE 05</b><span>Procedure</span></div><h2>Four steps, <em>no</em> magic.</h2></div>
+    <div class="steps reveal">
+      <div class="step"><span class="no">01</span><h4>Generate</h4><p>2,900 synthetic adverts with known labels from original templates. Employers are fictional. Test styles never appear in training.</p></div>
+      <div class="step"><span class="no">02</span><h4>Tune</h4><p>A LoRA adapter on Phi-4-mini: rank 16, two epochs, 250 steps, 3.57 GiB of GPU memory.</p></div>
+      <div class="step"><span class="no">03</span><h4>Freeze</h4><p>Settings were picked on a dev split only, then written into the protocol before the test split was touched.</p></div>
+      <div class="step"><span class="no">04</span><h4>Test once</h4><p>Every arm ran once on the test adverts. Failures are published as failed. Nothing was rerun.</p></div>
     </div>
     <div class="stances">
-      <div class="stance reveal"><code>offers</code><p>The advert says it will sponsor.</p></div>
-      <div class="stance reveal" style="--i:1"><code>excludes</code><p>"No sponsorship", or only "must have the right to work in the UK".</p></div>
-      <div class="stance reveal" style="--i:2"><code>unclear</code><p>Hedged wording, or two statements that contradict each other.</p></div>
-      <div class="stance reveal" style="--i:3"><code>not_stated</code><p>Nothing about sponsorship or the right to work.</p></div>
+      <div class="st reveal"><span class="s">offers</span><p>The advert says it will sponsor.</p></div>
+      <div class="st reveal" style="--i:1"><span class="s">excludes</span><p>"No sponsorship", or only "must have the right to work in the UK".</p></div>
+      <div class="st reveal" style="--i:2"><span class="s">unclear</span><p>Hedged wording, or two statements that contradict each other.</p></div>
+      <div class="st reveal" style="--i:3"><span class="s">not stated</span><p>Nothing about sponsorship or the right to work.</p></div>
     </div>
   </div>
 </section>
 
-<hr class="rule">
+<div class="perf"></div>
 
 <section id="limits">
   <div class="wrap">
-    <p class="eyebrow reveal">Limits</p>
-    <h2 class="reveal" style="--i:1;margin-top:18px">What these results <em>do not</em> show.</h2>
-    <div class="limits">
-      <div class="limit reveal"><span>01</span><p>The test adverts are synthetic and I wrote the generator, so the tuned model learned its habits. The unseen styles reduce this but do not remove it.</p></div>
-      <div class="limit reveal"><span>02</span><p>Only 50 of the 600 test adverts were run, by decision, so the intervals are wide. The result stands as it is.</p></div>
-      <div class="limit reveal"><span>03</span><p>The real-advert set is 10 adverts, all from LinkedIn. The labels were drafted from the guide and checked by me.</p></div>
-      <div class="limit reveal"><span>04</span><p>One base model, one seed. "Unclear" is a judgement class and the rules are mine.</p></div>
-      <div class="limit reveal"><span>05</span><p>An answer says what the advert says. It is not legal advice, and a licence on the UK sponsor register does not mean a given job is sponsored.</p></div>
+    <div class="head reveal"><div class="pg"><b>PAGE 06</b><span>Conditions of entry</span></div><h2>What these results do <em>not</em> show.</h2></div>
+    <div class="cond">
+      <div class="c1 reveal"><span>01</span><p>The test adverts are synthetic and I wrote the generator, so the tuned model learned its habits. The unseen styles reduce this but do not remove it.</p></div>
+      <div class="c1 reveal"><span>02</span><p>Only 50 of the 600 test adverts were run, by decision, so the intervals are wide. The result stands as it is.</p></div>
+      <div class="c1 reveal"><span>03</span><p>The real-advert set is 10 adverts, all from LinkedIn. The labels were drafted from the guide and checked by me.</p></div>
+      <div class="c1 reveal"><span>04</span><p>One base model, one seed. "Unclear" is a judgement class and the rules are mine.</p></div>
+      <div class="c1 reveal"><span>05</span><p>An answer says what the advert says. It is not legal advice, and a licence on the UK sponsor register does not mean a given job is sponsored.</p></div>
     </div>
   </div>
 </section>
 
 <section id="run" class="dark">
-  <div class="wrap run">
-    <div>
-      <p class="eyebrow reveal">Run it</p>
-      <h2 class="reveal" style="--i:1;margin:18px 0 26px">Clone it. <em>Check</em> it.</h2>
-      <p class="lede reveal" style="--i:2">The tests and the official scoring run on any laptop, with or without Docker. Training and the model need an NVIDIA GPU with 8 GB.</p>
-      <div class="cta reveal" style="--i:3;margin-top:30px">
-        <a class="btn solid" href="https://github.com/Onkar-Gupta/sponsor-scout">Open the repo</a>
-        <a class="btn ghost" href="https://github.com/Onkar-Gupta/sponsor-scout/blob/main/eval/protocol.md">Read the protocol</a>
+  <div class="wrap">
+    <div class="head reveal"><div class="pg"><b>PAGE 07</b><span>Application</span></div><h2>Clone it. <em style="color:var(--gold)">Check</em> it.</h2></div>
+    <div class="run">
+      <div class="reveal">
+        <p class="lede">The tests and the official scoring run on any laptop, with or without Docker. Training and the model need an NVIDIA GPU with 8 GB.</p>
+        <div class="cta"><a class="btn gold" href="https://github.com/Onkar-Gupta/sponsor-scout">Open the repo</a><a class="btn alt" href="https://github.com/Onkar-Gupta/sponsor-scout/blob/main/eval/protocol.md">Read the protocol</a></div>
       </div>
-    </div>
-    <div class="reveal" style="--i:2">
-      <div class="code"><span class="code-title">Quick start</span><span class="c"># tests, CPU only</span>
+      <div class="reveal" style="--i:1">
+        <div class="code"><span class="code-title">Quick start</span><span class="c"># tests, CPU only</span>
 <span class="p">$</span> git clone https://github.com/Onkar-Gupta/sponsor-scout
 <span class="p">$</span> cd sponsor-scout
 <span class="p">$</span> pip install -r requirements.txt &amp;&amp; pip install -e .
 <span class="p">$</span> pytest</div>
-      <div class="code"><span class="code-title">Docker</span><span class="c"># re-score the saved official run</span>
+        <div class="code"><span class="code-title">Docker</span><span class="c"># re-score the saved official run</span>
 <span class="p">$</span> docker build -t sponsor-scout .
 <span class="p">$</span> docker run --rm sponsor-scout</div>
+      </div>
     </div>
   </div>
 </section>
@@ -422,11 +432,11 @@ footer a:hover{color:var(--accent)}
 <footer>
   <div class="wrap">
     <div class="foot">
-      <div><a class="brand" href="#top" style="padding:0"><span class="dot"></span>sponsor-scout</a><p style="margin-top:14px;max-width:34ch">UK job adverts to JSON, with a straight answer on visa sponsorship.</p></div>
+      <div><a class="brand" href="#top" style="padding:0"><svg viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="16" fill="none" stroke="#C9A24B" stroke-width="2"/><path d="M10.5 17.5l4.5 4.5 8.5-10" fill="none" stroke="#C9A24B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>sponsor-scout</a><p style="margin-top:14px;max-width:36ch;opacity:.85">UK job adverts to JSON, with a straight answer on visa sponsorship.</p></div>
       <div><h4>Project</h4><a href="https://github.com/Onkar-Gupta/sponsor-scout">Repository</a><a href="https://github.com/Onkar-Gupta/sponsor-scout/releases/tag/v1.0.0">Release v1.0.0</a><a href="https://github.com/Onkar-Gupta/sponsor-scout/blob/main/eval/protocol.md">Pre-registered protocol</a></div>
       <div><h4>Author</h4><a href="https://linkedin.com/in/onkar-gupta-ai">Onkar Gupta, LinkedIn</a><a href="https://github.com/Onkar-Gupta">GitHub</a></div>
     </div>
-    <p class="fine">Code under the MIT licence. The synthetic adverts are released under CC0 1.0. Copyright (c) 2026 Onkar Gupta. The optional sponsor register lookup contains public sector information licensed under the Open Government Licence v3.0.</p>
+    <p class="fine">Code under the MIT licence. The synthetic adverts are released under CC0 1.0. Copyright (c) 2026 Onkar Gupta. This is a personal project, not affiliated with or endorsed by the Home Office. The optional sponsor register lookup contains public sector information licensed under the Open Government Licence v3.0.</p>
   </div>
 </footer>
 
@@ -551,7 +561,7 @@ footer a:hover{color:var(--accent)}
     if (!valid){
       ans.innerHTML = '<div class="stance-big rej">Rejected</div><p>The checks refuse this output, so there is <b>no usable answer</b>. This is the kind of failure the tuning removed: <b>the tuned model passed all four adverts here, the prompt-only model failed two</b>.</p>';
     } else {
-      ans.innerHTML = '<div class="stance-big">'+esc(o.sponsorship)+'</div><p>'+
+      ans.innerHTML = '<div class="stance-big s-'+esc(o.sponsorship)+'">'+esc(o.sponsorship.replace('_',' '))+'</div><p>'+
         (d.mark.length ? 'Because of the highlighted line: <b>&ldquo;'+line.replace(/^NOTE:\s*/,'')+'&rdquo;</b>'+(d.mark.length>1?' and a second line that contradicts it.':'') : 'There is no line about sponsorship or the right to work, so the answer is <b>not_stated</b>, never a guess.')+
         (wrong.length ? ' <b>But this answer is wrong</b>: the correct label is <b>'+esc(d.gold.sponsorship)+'</b>.' : '')+'</p>';
     }
@@ -571,6 +581,13 @@ footer a:hover{color:var(--accent)}
   });
   var started = false, so = new IntersectionObserver(function(es){ if (es[0].isIntersecting && !started){ started = true; play(); so.disconnect(); } }, {threshold:.25});
   so.observe(document.getElementById('tsteps'));
+})();
+</script>
+<script>
+(function(){
+  var st = document.getElementById('stamp');
+  if (!st) return;
+  st.addEventListener('click', function(){ st.classList.remove('slam'); void st.getBoundingClientRect(); st.classList.add('slam'); });
 })();
 </script>
 </body>
