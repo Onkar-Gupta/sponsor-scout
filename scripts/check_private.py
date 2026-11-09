@@ -21,5 +21,6 @@ for n, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
     if errs:
         bad += 1
         print(f"line {n}: {'; '.join(errs)}")
-print(f"{rows} records, {bad} with problems (target 50, 0 problems)")
-sys.exit(1 if bad or rows != 50 else 0)
+want = int(sys.argv[2]) if len(sys.argv) > 2 else 10
+print(f"{rows} records, {bad} with problems (target {want}, 0 problems)")
+sys.exit(1 if bad or rows != want else 0)

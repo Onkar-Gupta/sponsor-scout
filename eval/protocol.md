@@ -121,10 +121,18 @@ Fixed now, before any data exists. Exactly six.
   4. **Code state:** the tuning ran at commit `40767d2`. The freeze commit follows it and changes only this file.
   5. **From here:** no prompt edit, no new training run and no setting change before the test run. Any change needs a dated Amendment first and is reported. The test, MMLU and private checks run once (section 6); the official data hashes in `data/SHA256SUMS.json` are unchanged.
 
+- 9 Nov 2026, private real-advert set (written before any model has seen these adverts; no pass mark moves):
+  1. **Size.** 10 real UK adverts, not the 30 to 50 planned in section 3. The private check has no pass mark (section 5), so this breaks no mark. It is a smoke check, not evidence that results hold on real adverts in general. More adverts may be added only before the test run; after it, none.
+  2. **Source.** All 10 were copied by the author from LinkedIn job pages (one employer is an agency that hides its client). Page furniture was removed (buttons, dates, applicant counts, "people you can reach out to"). The header lines (company, title, place, work-pattern badge) were kept because the model sees them. Where the header and the body disagree, the body decides the label. One Amsterdam advert was rejected as outside the UK scope. Text and labels stay in the gitignored `data/private/`.
+  3. **Who labelled.** The labels were drafted by Claude from `eval/labelling_guide.md`, then checked by the author, advert by advert, before any model output existed. This is a weaker design than labelling by the author alone, and it is added to the limits in section 9.
+  4. **Coverage gaps.** All 10 have `closing_date` null and none has an hourly or daily rate, so those rules are untested on real text. Sponsorship labels: `not_stated` 6, `offers` 1, `unclear` 1, `excludes` 1. All 10 are from LinkedIn, so the style range is narrow.
+  5. **Judgement calls fixed now.** Nice-to-have skills are excluded; the title is the page heading; a relocation allowance is not sponsorship; a stated work permit is `offers`; hedged "visa assistance (conditions apply)" is `unclear`; a line "Authorized to work in United Kingdom" alone is `excludes`; several towns or countries give a null location.
+  6. **Freeze.** SHA-256 of `data/private/adverts.jsonl` (text and labels): `b13e81776832252d54786015729a89c2ea9d27e615ce8b591be8edde6e432a24`. `scripts/check_private.py` passes (10 records, 0 problems). The labels are not edited after model output exists.
+
 ## 9. Known biases and limits
 
 - Synthetic adverts are cleaner and more regular than real ones, so test scores will flatter real use.
-- The author wrote the generator, the labelling guide and the private labels. This is a self-test, not an independent one.
+- The author wrote the generator and the labelling guide. The private labels were drafted by Claude and checked by the author, and the private set is only 10 adverts. This is a self-test, not an independent one.
 - One base model and one seed.
 - MMLU is one narrow measure of general ability.
 - "Unclear" is a judgement class, and its rules are ours.
