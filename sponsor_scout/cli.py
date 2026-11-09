@@ -20,6 +20,7 @@ def main(argv=None):
     ex.add_argument("--file", help="advert text file (default: stdin)")
     ex.add_argument("--arm", choices=ARMS, default="few_shot")
     ex.add_argument("--adapter", help="LoRA adapter folder (for --arm tuned)")
+    ex.add_argument("--register", help="sponsor register CSV (scripts/download_register.py); adds an employer lookup")
     args = ap.parse_args(argv)
 
     text = Path(args.file).read_text(encoding="utf-8") if args.file else sys.stdin.read()
@@ -34,6 +35,10 @@ def main(argv=None):
         print("Note: the model output is not valid JSON for the schema. Raw text follows.\n" + output)
         return 1
     print(json.dumps(record, indent=2, ensure_ascii=False))
+    if args.register:
+        from .register import load_register, lookup
+        print("\nSponsor register (a licence shows the employer can sponsor, not that this job is sponsored):")
+        print(json.dumps(lookup(record["employer"], load_register(args.register)), indent=2, ensure_ascii=False))
     return 0
 
 

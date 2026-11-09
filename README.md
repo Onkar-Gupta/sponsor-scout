@@ -10,7 +10,7 @@ Paste a UK job advert, get clean JSON and a straight answer on visa sponsorship,
 ```bash
 git clone https://github.com/Onkar-Gupta/sponsor-scout && cd sponsor-scout
 pip install -r requirements.txt && pip install -e .
-pytest                      # 106 tests, CPU only, about 2 seconds
+pytest                      # 113 tests, CPU only, about 2 seconds
 ```
 
 To train and run the model you need an NVIDIA GPU with 8 GB. See [Train and extract](#train-and-extract).
@@ -115,7 +115,7 @@ eval/               protocol.md (pre-registered, with dated Amendments), labelli
 data/               train, dev and test adverts (CC0), subset ids, hashes; private/ is gitignored
 prompts/            the three few-shot prompt versions tried on dev
 reports/            every dev run and every official result
-tests/              106 tests, including a guard that the frozen data never changes
+tests/              113 tests, including a guard that the frozen data never changes
 config.yaml         all settings
 ```
 
@@ -141,9 +141,17 @@ sponsor-scout extract --file advert.txt --arm tuned --adapter outputs/adapters/r
 
 Put one advert in a text file and pass it with `--file`, or pipe text to `sponsor-scout extract`. To score your own labelled adverts, write a JSONL file with `id`, `text` and `label` (the shape of `schema.json`), check it with `python scripts/check_private.py your.jsonl N`, then run `scripts/run_arm.py` and `scripts/score_run.py`. The labelling rules are in `eval/labelling_guide.md`.
 
+## Sponsor register lookup
+
+`sponsor-scout extract --register data/register/register.csv ...` also looks the extracted employer up on the Home Office register of licensed sponsors. Download the register first with `python scripts/download_register.py` (about 11 MB, 126,754 organisations on 9 November 2026; it is never committed because it changes often).
+
+The lookup is exact on a normalised name (case, punctuation, "Ltd", "Limited", "PLC" and "UK" ignored), then lists close matches as possibilities only. It does not guess: "Computershare UK" does not match "Computershare Investor Services PLC", and a hidden client (`employer: null`) returns no match. A licence shows that an employer can sponsor, not that this job is sponsored. This lookup is not part of the pre-registered test and has no accuracy figure.
+
+Contains public sector information licensed under the [Open Government Licence v3.0](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/). Source: [Register of licensed sponsors: workers](https://www.gov.uk/government/publications/register-of-licensed-sponsors-workers), Home Office.
+
 ## Command reference
 
-`sponsor-scout extract [--file F] [--arm zero_shot|few_shot|tuned|constrained] [--adapter DIR]` prints the JSON record, or the raw text with a note when the output breaks the schema. There is no web API.
+`sponsor-scout extract [--file F] [--arm zero_shot|few_shot|tuned|constrained] [--adapter DIR] [--register CSV]` prints the JSON record, or the raw text with a note when the output breaks the schema. There is no web API.
 
 ## Docker
 
@@ -151,7 +159,6 @@ TBC.
 
 ## Roadmap
 
-- Sponsor register lookup at run time (employer name against the public register).
 - Free Colab notebook for training and scoring.
 - Docker image that runs the tests and the rescoring.
 - More real adverts, from several sites, labelled by more than one person.
