@@ -1,0 +1,11 @@
+.git
+venv
+outputs
+data/private
+data/register
+**/__pycache__
+*.egg-info
+.pytest_cache
+.ruff_cache
+install_torch.log
+P4_*.md

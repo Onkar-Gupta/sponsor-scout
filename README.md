@@ -114,7 +114,7 @@ scripts/            make_adverts, train, run_arm, score_run, mmlu_check, make_su
 eval/               protocol.md (pre-registered, with dated Amendments), labelling_guide.md
 data/               train, dev and test adverts (CC0), subset ids, hashes; private/ is gitignored
 prompts/            the three few-shot prompt versions tried on dev
-reports/            every dev run and every official result
+reports/            every dev run and every official result, plus saved test predictions
 tests/              113 tests, including a guard that the frozen data never changes
 config.yaml         all settings
 ```
@@ -155,12 +155,19 @@ Contains public sector information licensed under the [Open Government Licence v
 
 ## Docker
 
-TBC.
+A small CPU image (269 MB) that runs the 113 tests and re-scores the saved official predictions. It does not train or run the model, which needs an NVIDIA GPU.
+
+```bash
+docker build -t sponsor-scout .
+docker run --rm sponsor-scout            # runs the tests
+docker run --rm sponsor-scout python scripts/score_run.py --gold data/test.jsonl   --ids-file data/test_subset50.json --fewshot reports/predictions/test_few_shot.jsonl   --tuned reports/predictions/test_tuned.jsonl      # prints the six-mark comparison from the official run
+```
+
+The last command reproduces `reports/test_marks.json` byte for byte. CI builds the image and runs both on every push. The saved predictions are the model outputs for the 50 synthetic test adverts in `reports/predictions/`.
 
 ## Roadmap
 
 - Free Colab notebook for training and scoring.
-- Docker image that runs the tests and the rescoring.
 - More real adverts, from several sites, labelled by more than one person.
 - Try constrained decoding on top of the tuned adapter.
 

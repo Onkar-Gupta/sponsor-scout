@@ -16,3 +16,16 @@ jobs:
       - run: pip install -e .
       - run: ruff check .
       - run: pytest -v
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t sponsor-scout .
+      - run: docker run --rm sponsor-scout
+      - name: Re-score the saved official predictions and compare with the committed report
+        run: |
+          docker run --rm sponsor-scout python scripts/score_run.py --gold data/test.jsonl \
+            --ids-file data/test_subset50.json --fewshot reports/predictions/test_few_shot.jsonl \
+            --tuned reports/predictions/test_tuned.jsonl > /tmp/marks.json
+          diff /tmp/marks.json reports/test_marks.json
