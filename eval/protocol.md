@@ -143,6 +143,11 @@ Fixed now, before any data exists. Exactly six.
   4. **No top-up.** The 50-advert result is final. Running the other 550 after seeing it would be choosing when to stop by the result, so it is not done under this protocol.
   5. **Unchanged.** The 10 private adverts and the MMLU check (1,000 questions) run as described above. The README states "50 of 600 test adverts".
 
+- 9 Nov 2026, official run complete (all arms once; nothing rerun). Produced from commit `2658b1d` (recorded in `reports/mmlu.json`; the tree was clean for every run). Reports: `reports/test_{zero_shot,few_shot,tuned,constrained}.json`, `reports/test_marks.json`, `reports/private_*.json`, `reports/mmlu.json`. Output files stay in the gitignored `outputs/`; first 12 hex characters of their SHA-256: test constrained `69f04fa41f39`, few-shot `a1b65004d576`, tuned `15696fd810ea`, zero-shot `9e035f2853a8`; private constrained `08a3c0d5ad8b`, few-shot `4a0855d70949`, tuned `cc90448d6109`, zero-shot `5baaa25f3f7d`. Facts found while reading the results (no mark moves):
+  1. **Zero-shot scores 0.0 JSON validity on all 50 test and all 10 private adverts.** Checked by hand: the outputs are fenced JSON (a fence is allowed), but each breaks the schema, for example `skills` as one comma-separated string and `work_pattern` values such as "office based", "Hybrid" or "full-time". It is a real failure of the untuned model under the schema, not a parsing fault.
+  2. **Tuned private run: 9 of 10 valid.** The one invalid output used the capitalised value "Hybrid" for `work_pattern`, which the schema does not allow.
+  3. **Batch sizes:** few-shot, zero-shot and constrained at batch size 1; tuned at batch size 8 on the test subset (latency not comparable) and batch size 1 on the private set.
+
 ## 9. Known biases and limits
 
 - Synthetic adverts are cleaner and more regular than real ones, so test scores will flatter real use.

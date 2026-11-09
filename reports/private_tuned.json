@@ -1,0 +1,59 @@
+{
+  "all": {
+    "n": 10,
+    "json_validity": 0.9,
+    "per_field_accuracy": {
+      "title": 0.6,
+      "employer": 0.8,
+      "location": 0.4,
+      "salary_min": 0.8,
+      "salary_max": 0.9,
+      "work_pattern": 0.4,
+      "years_experience_min": 0.9,
+      "closing_date": 0.9,
+      "sponsorship": 0.6
+    },
+    "mean_field_accuracy": 0.7,
+    "skills_f1": 0.36363636363636365,
+    "sponsorship_accuracy": 0.6,
+    "sponsorship_macro_f1": 0.3173076923076923,
+    "sponsorship_confusion": {
+      "offers": {
+        "offers": 0,
+        "excludes": 0,
+        "not_stated": 0,
+        "unclear": 1,
+        "invalid": 0
+      },
+      "excludes": {
+        "offers": 0,
+        "excludes": 0,
+        "not_stated": 1,
+        "unclear": 0,
+        "invalid": 0
+      },
+      "not_stated": {
+        "offers": 0,
+        "excludes": 0,
+        "not_stated": 5,
+        "unclear": 1,
+        "invalid": 1
+      },
+      "unclear": {
+        "offers": 0,
+        "excludes": 0,
+        "not_stated": 0,
+        "unclear": 1,
+        "invalid": 0
+      }
+    },
+    "invented_value_rate": 0.10810810810810811,
+    "invented_counted_on_valid_only": {
+      "valid_outputs": 9,
+      "invalid_outputs": 1,
+      "null_fields": 37,
+      "invented": 4
+    },
+    "exact_match": 0.0
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "all": {
+    "n": 50,
+    "json_validity": 0.82,
+    "per_field_accuracy": {
+      "title": 0.8,
+      "employer": 0.78,
+      "location": 0.72,
+      "salary_min": 0.72,
+      "salary_max": 0.76,
+      "work_pattern": 0.66,
+      "years_experience_min": 0.82,
+      "closing_date": 0.72,
+      "sponsorship": 0.64
+    },
+    "mean_field_accuracy": 0.7355555555555555,
+    "skills_f1": 0.9266862170087976,
+    "sponsorship_accuracy": 0.64,
+    "sponsorship_macro_f1": 0.7099898580121704,
+    "sponsorship_confusion": {
+      "offers": {
+        "offers": 9,
+        "excludes": 0,
+        "not_stated": 0,
+        "unclear": 1,
+        "invalid": 0
+      },
+      "excludes": {
+        "offers": 0,
+        "excludes": 5,
+        "not_stated": 0,
+        "unclear": 2,
+        "invalid": 4
+      },
+      "not_stated": {
+        "offers": 0,
+        "excludes": 0,
+        "not_stated": 10,
+        "unclear": 4,
+        "invalid": 1
+      },
+      "unclear": {
+        "offers": 1,
+        "excludes": 1,
+        "not_stated": 0,
+        "unclear": 8,
+        "invalid": 4
+      }
+    },
+    "invented_value_rate": 0.3424657534246575,
+    "invented_counted_on_valid_only": {
+      "valid_outputs": 41,
+      "invalid_outputs": 9,
+      "null_fields": 73,
+      "invented": 25
+    },
+    "exact_match": 0.32
+  },
+  "held_out": {
+    "n": 25,
+    "json_validity": 0.72,
+    "per_field_accuracy": {
+      "title": 0.72,
+      "employer": 0.72,
+      "location": 0.64,
+      "salary_min": 0.68,
+      "salary_max": 0.68,
+      "work_pattern": 0.64,
+      "years_experience_min": 0.72,
+      "closing_date": 0.72,
+      "sponsorship": 0.6
+    },
+    "mean_field_accuracy": 0.68,
+    "skills_f1": 0.8846153846153846,
+    "sponsorship_accuracy": 0.6,
+    "sponsorship_macro_f1": 0.6181318681318682,
+    "sponsorship_confusion": {
+      "offers": {
+        "offers": 5,
+        "excludes": 0,
+        "not_stated": 0,
+        "unclear": 0,
+        "invalid": 0
+      },
+      "excludes": {
+        "offers": 0,
+        "excludes": 0,
+        "not_stated": 0,
+        "unclear": 2,
+        "invalid": 4
+      },
+      "not_stated": {
+        "offers": 0,
+        "excludes": 0,
+        "not_stated": 6,
+        "unclear": 1,
+        "invalid": 1
+      },
+      "unclear": {
+        "offers": 0,
+        "excludes": 0,
+        "not_stated": 0,
+        "unclear": 4,
+        "invalid": 2
+      }
+    },
+    "invented_value_rate": 0.22727272727272727,
+    "invented_counted_on_valid_only": {
+      "valid_outputs": 18,
+      "invalid_outputs": 7,
+      "null_fields": 22,
+      "invented": 5
+    },
+    "exact_match": 0.36
+  }
+}

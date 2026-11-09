@@ -1,0 +1,44 @@
+{
+  "mark_1_full_test_mean_field_accuracy": {
+    "difference": 0.2577777777777778,
+    "low": 0.1644444444444445,
+    "high": 0.36444444444444446,
+    "met": true,
+    "tuned": 0.9933333333333333,
+    "fewshot": 0.7355555555555555
+  },
+  "mark_2_held_out_mean_field_accuracy": {
+    "difference": 0.3155555555555555,
+    "low": 0.16000000000000003,
+    "high": 0.48444444444444446,
+    "met": true,
+    "tuned": 0.9955555555555555,
+    "fewshot": 0.68,
+    "n": 25
+  },
+  "mark_3_sponsorship_macro_f1": {
+    "difference": 0.26884612082380843,
+    "low": 0.15229383025011214,
+    "high": 0.4083581907585204,
+    "tuned": 0.9788359788359788,
+    "fewshot": 0.7099898580121704,
+    "met": true
+  },
+  "mark_4_tuned_json_validity": {
+    "validity": 1.0,
+    "wilson_95": [
+      0.9286499658256813,
+      1.0
+    ],
+    "met": true
+  },
+  "mark_5_invented_value_rate": {
+    "difference": -0.3424657534246575,
+    "low": -0.46774193548387094,
+    "high": -0.23187963944856846,
+    "tuned": 0.0,
+    "fewshot": 0.3424657534246575,
+    "met": true
+  },
+  "marks_met_of_5": 5
+}
