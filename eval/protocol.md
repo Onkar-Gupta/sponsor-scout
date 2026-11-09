@@ -136,6 +136,13 @@ Fixed now, before any data exists. Exactly six.
   4. **Dry run, disclosed.** Before this Amendment, `mmlu_check.py` was run once with `--limit 20` to a scratch file to confirm it works (base 0.65, tuned 0.60 on those 20; 5 seconds). That output is not an official result, was not kept in the repo, and the official run covers all 1,000 questions including those 20. It moves no pass mark.
   5. **Order.** Test arms, then private arms, then MMLU. All outputs are kept. A rerun needs a dated reason (section 6).
 
+- 9 Nov 2026, test subset of 50 (written before any test output exists; supersedes item 2 of the official run procedure above where it says 600 test adverts; no pass mark moves):
+  1. **Decision.** At the author's request the scored test run uses 50 of the 600 test adverts, to save GPU time. The pass marks, their wording and the metrics are unchanged.
+  2. **Subset.** 25 in-style and 25 held-out adverts, drawn with `random.Random(0)` by `scripts/make_subset.py`, stored as a list of ids in `data/test_subset50.json` (SHA-256 `0ec125650615b4a038a309913293b41dc3e6aa3ac2ddf2fcd5cd6efaaa043d00`). The draw ignores labels. It happens to hold sponsorship `not_stated` 15, `unclear` 14, `excludes` 11, `offers` 10. `run_arm.py` and `score_run.py` take `--ids-file`. The other 550 test adverts are not run and not looked at.
+  3. **What it costs.** Intervals are much wider than at 600, and sponsorship macro-F1 over 50 adverts is noisy. A mark can fail for lack of data and not because the tuning failed; if so it is published as failed with the interval, not explained away. Mark 2 rests on 25 adverts.
+  4. **No top-up.** The 50-advert result is final. Running the other 550 after seeing it would be choosing when to stop by the result, so it is not done under this protocol.
+  5. **Unchanged.** The 10 private adverts and the MMLU check (1,000 questions) run as described above. The README states "50 of 600 test adverts".
+
 ## 9. Known biases and limits
 
 - Synthetic adverts are cleaner and more regular than real ones, so test scores will flatter real use.

@@ -211,3 +211,11 @@ def test_batched_run_keeps_order_and_ids(tmp_path, monkeypatch):
 def test_run_arm_script_refuses_private_without_official(tmp_path):
     with pytest.raises(SystemExit, match="refused"):
         load_script().main(["--arm", "zero_shot", "--split", "private", "--out", str(tmp_path / "p.jsonl")])
+
+
+def test_test_subset_is_25_in_style_and_25_held_out():
+    ids = set(json.loads((ROOT / "data" / "test_subset50.json").read_text(encoding="utf-8")))
+    test = read("test")
+    assert len(ids) == 50
+    by = {s: sum(1 for r in test if r["id"] in ids and r["slice"] == s) for s in ("in_style", "held_out")}
+    assert by == {"in_style": 25, "held_out": 25}

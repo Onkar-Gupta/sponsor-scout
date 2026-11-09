@@ -39,11 +39,17 @@ def main(argv=None):
     ap.add_argument("--fewshot", help="comparison: the few-shot arm's JSONL")
     ap.add_argument("--tuned", help="comparison: the tuned arm's JSONL (the difference is tuned minus few-shot)")
     ap.add_argument("--out", help="write the JSON report here")
+    ap.add_argument("--ids-file", help="JSON list of advert ids; score only these (the fixed test subset)")
     args = ap.parse_args(argv)
 
     if bool(args.pred) == bool(args.fewshot or args.tuned) or bool(args.fewshot) != bool(args.tuned):
         sys.exit("give either --pred, or both --fewshot and --tuned")
     gold = read_jsonl(args.gold)
+    if args.ids_file:
+        keep = set(json.loads(Path(args.ids_file).read_text(encoding="utf-8")))
+        gold = [g for g in gold if g["id"] in keep]
+        if len(gold) != len(keep):
+            sys.exit("ids file names adverts that are not in the gold split")
     ids = [g["id"] for g in gold]
     if args.pred:
         report = single_report(gold, load_preds(args.pred, ids))

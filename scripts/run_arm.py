@@ -31,6 +31,7 @@ def main(argv=None):
     ap.add_argument("--adapter")
     ap.add_argument("--fewshot-version", type=int, default=1)
     ap.add_argument("--limit", type=int)
+    ap.add_argument("--ids-file", help="JSON list of advert ids; only these are run (the fixed test subset)")
     ap.add_argument("--batch-size", type=int, help="adverts per GPU batch; overrides config.yaml (inference.batch_size)")
     ap.add_argument("--resume", action="store_true")
     ap.add_argument("--official", action="store_true", help="the one scored run on test or private")
@@ -52,6 +53,10 @@ def main(argv=None):
     data = Path(cfg["data_dir"]) / ("private/adverts.jsonl" if args.split == "private" else f"{args.split}.jsonl")
     with open(data, encoding="utf-8") as f:
         records = [json.loads(x) for x in f if x.strip()][: args.limit]
+    if args.ids_file:
+        keep = set(json.loads(Path(args.ids_file).read_text(encoding="utf-8")))
+        records = [r for r in records if r["id"] in keep]
+        assert len(records) == len(keep), "ids file names adverts that are not in the split"
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
     run_arm(args.arm, records, args.out, cfg, adapter=args.adapter, fewshot_version=args.fewshot_version,
             resume=args.resume)
