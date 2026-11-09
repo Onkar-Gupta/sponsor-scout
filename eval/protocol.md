@@ -114,6 +114,13 @@ Fixed now, before any data exists. Exactly six.
   4. **Fairness.** The few-shot arm had 3 tries and the tuned arm 1, so the unspent budget does not favour the tuned arm.
   5. **Selection rule unchanged.** Highest dev mean field accuracy, tie-break smaller rank, then fewer epochs. Which settings are chosen is recorded in the freeze Amendment (step 11), not here.
 
+- 9 Nov 2026, F3 freeze (written before any test output existed; no pass mark moves). The final settings are:
+  1. **Few-shot arm:** prompt version 1, `prompts/fewshot_v1.json`, SHA-256 `a1690a6176bc43aee2ad542732f2b3afe342bd785ead268df5768024697f4ea8`. Dev mean field accuracy 0.757 (v2 0.641, v3 0.750). Runs at batch size 1.
+  2. **Tuned arm:** LoRA run 1, `r16_lr2e-4_e2` (rank 16, alpha 32, learning rate 2e-4, 2 epochs, dropout 0.05, base `microsoft/Phi-4-mini-instruct`). Dev mean field accuracy 0.994. Adapter weights `adapter_model.safetensors` SHA-256 `fe2eb0e21d61a85ed54c29556ff03f774b203963b240d11bd2164a0b38fa182b`; `adapter_config.json` SHA-256 `d5e79416ee32bbff97b61d569bbd9602215ef0652fcb74bebf808240e34669da`. The weights stay outside git.
+  3. **Selection:** by the F2 rule (highest dev mean field accuracy), applied to every dev run kept in `reports/`. No tie occurred.
+  4. **Code state:** the tuning ran at commit `40767d2`. The freeze commit follows it and changes only this file.
+  5. **From here:** no prompt edit, no new training run and no setting change before the test run. Any change needs a dated Amendment first and is reported. The test, MMLU and private checks run once (section 6); the official data hashes in `data/SHA256SUMS.json` are unchanged.
+
 ## 9. Known biases and limits
 
 - Synthetic adverts are cleaner and more regular than real ones, so test scores will flatter real use.
