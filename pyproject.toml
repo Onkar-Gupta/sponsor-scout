@@ -27,3 +27,4 @@ sponsor-scout = "sponsor_scout.cli:main"
 
 [tool.ruff]
 line-length = 120
+extend-exclude = ["notebooks"]

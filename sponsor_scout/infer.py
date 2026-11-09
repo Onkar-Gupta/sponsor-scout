@@ -14,16 +14,23 @@ SCHEMA_PATH = Path(__file__).resolve().parent.parent / "schema.json"
 DROP_KEYS = {"$schema", "title", "format"}
 
 
+def gpu_dtype():
+    """bfloat16 where the GPU supports it natively (as on the author's RTX 4070), else float16 (for example a Colab T4)."""
+    import torch
+
+    return torch.bfloat16 if torch.cuda.is_bf16_supported(including_emulation=False) else torch.float16
+
+
 def load_hf(base_model, adapter=None):
     """The base model in 4-bit NF4 (as in scripts/gpu_smoke.py), optionally wrapped with a LoRA adapter."""
-    import torch
     from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 
-    quant = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_compute_dtype=torch.bfloat16,
+    dtype = gpu_dtype()
+    quant = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_compute_dtype=dtype,
                                bnb_4bit_use_double_quant=True)
     tok = AutoTokenizer.from_pretrained(base_model)
     model = AutoModelForCausalLM.from_pretrained(base_model, quantization_config=quant, device_map={"": 0},
-                                                 torch_dtype=torch.bfloat16)
+                                                 torch_dtype=dtype)
     if adapter:
         from peft import PeftModel
         model = PeftModel.from_pretrained(model, adapter)

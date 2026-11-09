@@ -10,7 +10,7 @@ Paste a UK job advert, get clean JSON and a straight answer on visa sponsorship,
 ```bash
 git clone https://github.com/Onkar-Gupta/sponsor-scout && cd sponsor-scout
 pip install -r requirements.txt && pip install -e .
-pytest                      # 113 tests, CPU only, about 2 seconds
+pytest                      # 115 tests, CPU only, about 2 seconds
 ```
 
 To train and run the model you need an NVIDIA GPU with 8 GB. See [Train and extract](#train-and-extract).
@@ -115,7 +115,8 @@ eval/               protocol.md (pre-registered, with dated Amendments), labelli
 data/               train, dev and test adverts (CC0), subset ids, hashes; private/ is gitignored
 prompts/            the three few-shot prompt versions tried on dev
 reports/            every dev run and every official result, plus saved test predictions
-tests/              113 tests, including a guard that the frozen data never changes
+tests/              115 tests, including a guard that the frozen data never changes
+notebooks/          colab.ipynb (train and score on dev; not yet run on Colab)
 config.yaml         all settings
 ```
 
@@ -155,7 +156,7 @@ Contains public sector information licensed under the [Open Government Licence v
 
 ## Docker
 
-A small CPU image (269 MB) that runs the 113 tests and re-scores the saved official predictions. It does not train or run the model, which needs an NVIDIA GPU.
+A small CPU image (269 MB) that runs the 115 tests and re-scores the saved official predictions. It does not train or run the model, which needs an NVIDIA GPU.
 
 ```bash
 docker build -t sponsor-scout .
@@ -167,7 +168,7 @@ The last command reproduces `reports/test_marks.json` byte for byte. CI builds t
 
 ## Roadmap
 
-- Free Colab notebook for training and scoring.
+- Colab: [`notebooks/colab.ipynb`](notebooks/colab.ipynb) trains the adapter and scores it on dev. It is written but has not been run on Colab yet, so there is no badge and no timing (TBC).
 - More real adverts, from several sites, labelled by more than one person.
 - Try constrained decoding on top of the tuned adapter.
 

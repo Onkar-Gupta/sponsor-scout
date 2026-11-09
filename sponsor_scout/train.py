@@ -55,6 +55,8 @@ def train(name, rank, learning_rate, epochs, cfg, max_steps=None):
     from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
     from trl import SFTConfig, SFTTrainer
 
+    from .infer import gpu_dtype
+
     t = cfg["training"]
     validate_settings(rank, learning_rate, epochs, cfg)
     reports = ROOT / cfg["reports_dir"]
@@ -63,16 +65,18 @@ def train(name, rank, learning_rate, epochs, cfg, max_steps=None):
     out_dir = ROOT / t["adapter_dir"] / (f"smoke_{name}" if max_steps else name)
     data = Dataset.from_list(training_rows(ROOT / cfg["data_dir"] / "train.jsonl"))
 
+    dtype = gpu_dtype()
     tok = AutoTokenizer.from_pretrained(cfg["base_model"])
-    quant = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_compute_dtype=torch.bfloat16,
+    quant = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_compute_dtype=dtype,
                                bnb_4bit_use_double_quant=True)
     model = AutoModelForCausalLM.from_pretrained(cfg["base_model"], quantization_config=quant, device_map={"": 0},
-                                                 torch_dtype=torch.bfloat16)
+                                                 torch_dtype=dtype)
     lora = LoraConfig(r=rank, lora_alpha=t["alpha_factor"] * rank, lora_dropout=t["dropout"], task_type="CAUSAL_LM",
                       target_modules=t["target_modules"])
     args = SFTConfig(output_dir=str(out_dir), num_train_epochs=epochs, max_steps=max_steps or -1,
                      per_device_train_batch_size=t["batch_size"], gradient_accumulation_steps=t["accumulation"],
-                     max_length=t["max_length"], gradient_checkpointing=True, bf16=True, learning_rate=learning_rate,
+                     max_length=t["max_length"], gradient_checkpointing=True, bf16=dtype == torch.bfloat16,
+                     fp16=dtype == torch.float16, learning_rate=learning_rate,
                      lr_scheduler_type=t["scheduler"], warmup_steps=t["warmup"], logging_steps=5,
                      save_strategy="no", report_to="none", seed=cfg["seed"])
     trainer = SFTTrainer(model=model, args=args, train_dataset=data, processing_class=tok, peft_config=lora)

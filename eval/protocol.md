@@ -148,6 +148,8 @@ Fixed now, before any data exists. Exactly six.
   2. **Tuned private run: 9 of 10 valid.** The one invalid output used the capitalised value "Hybrid" for `work_pattern`, which the schema does not allow.
   3. **Batch sizes:** few-shot, zero-shot and constrained at batch size 1; tuned at batch size 8 on the test subset (latency not comparable) and batch size 1 on the private set.
 
+- 9 Nov 2026, code change after the official run (no result, setting or pass mark changes): `sponsor_scout/infer.py` and `sponsor_scout/train.py` now pick the GPU number type automatically, bfloat16 where the GPU supports it natively and float16 otherwise, so the Colab notebook can run on a T4. On the author's RTX 4070 the choice is bfloat16 as before. Checked on that GPU: tuned outputs for the first 10 dev adverts are identical to the earlier run, and a 5-step training smoke run works. The float16 path is untested until the notebook has been run once on Colab. The official results and the frozen adapter are unaffected.
+
 ## 9. Known biases and limits
 
 - Synthetic adverts are cleaner and more regular than real ones, so test scores will flatter real use.
