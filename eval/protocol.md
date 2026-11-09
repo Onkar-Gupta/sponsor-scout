@@ -129,6 +129,13 @@ Fixed now, before any data exists. Exactly six.
   5. **Judgement calls fixed now.** Nice-to-have skills are excluded; the title is the page heading; a relocation allowance is not sponsorship; a stated work permit is `offers`; hedged "visa assistance (conditions apply)" is `unclear`; a line "Authorized to work in United Kingdom" alone is `excludes`; several towns or countries give a null location.
   6. **Freeze.** SHA-256 of `data/private/adverts.jsonl` (text and labels): `b13e81776832252d54786015729a89c2ea9d27e615ce8b591be8edde6e432a24`. `scripts/check_private.py` passes (10 records, 0 problems). The labels are not edited after model output exists.
 
+- 9 Nov 2026, official run procedure (written before any test, MMLU or private output exists; no pass mark moves):
+  1. **Code state.** Every official output is produced from one clean commit, recorded in each report. The scripts refuse a dirty tree and refuse to overwrite an output. `scripts/run_arm.py` now accepts `--split private` (file `data/private/adverts.jsonl`) under the same `--official` guard as test. `scripts/mmlu_check.py` is new.
+  2. **Test arms.** Zero-shot, few-shot (prompt v1, `--fewshot-version 1`, batch size 1), tuned (adapter `r16_lr2e-4_e2`, batch size 8 allowed, stated in the report) and constrained (Ollama, `phi4-mini:3.8b`), each once on the 600 test adverts. The same four arms run once on the 10 private adverts.
+  3. **MMLU definition (section 4 left details open).** 1,000 questions drawn with `random.Random(0).sample` from the `cais/mmlu` "all" test split, sorted by index. Plain zero-shot prompt (`scripts/mmlu_check.py`, function `prompt`), no chat template. The answer is the letter A to D with the highest next-token logit. Base answers come from the same loaded model with the adapter switched off, so base and tuned see identical questions and identical quantisation. Mark 6: tuned minus base at least -0.02; the paired bootstrap interval (10,000 resamples, seed 0) is reported.
+  4. **Dry run, disclosed.** Before this Amendment, `mmlu_check.py` was run once with `--limit 20` to a scratch file to confirm it works (base 0.65, tuned 0.60 on those 20; 5 seconds). That output is not an official result, was not kept in the repo, and the official run covers all 1,000 questions including those 20. It moves no pass mark.
+  5. **Order.** Test arms, then private arms, then MMLU. All outputs are kept. A rerun needs a dated reason (section 6).
+
 ## 9. Known biases and limits
 
 - Synthetic adverts are cleaner and more regular than real ones, so test scores will flatter real use.

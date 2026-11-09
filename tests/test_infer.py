@@ -206,3 +206,8 @@ def test_batched_run_keeps_order_and_ids(tmp_path, monkeypatch):
     rows = [json.loads(x) for x in out.read_text(encoding="utf-8").splitlines()]
     assert calls == [2, 2, 1] and [r["id"] for r in rows] == [r["id"] for r in recs]
     assert all(r["batch_size"] == 2 for r in rows)
+
+
+def test_run_arm_script_refuses_private_without_official(tmp_path):
+    with pytest.raises(SystemExit, match="refused"):
+        load_script().main(["--arm", "zero_shot", "--split", "private", "--out", str(tmp_path / "p.jsonl")])
